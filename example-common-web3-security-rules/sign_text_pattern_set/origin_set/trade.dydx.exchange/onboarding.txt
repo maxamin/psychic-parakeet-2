@@ -1,0 +1,4 @@
+{
+    "action": "dYdX Onboarding",
+    "onlySignOn": "https://trade.dydx.exchange"
+}

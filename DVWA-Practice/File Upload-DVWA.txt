@@ -1,0 +1,11 @@
+# File Upload (Difficulty: Low)
+just upload the file...
+
+(Difficulty: Medium)
+Change the extention or size of the file & upload...
+
+(Difficulty: High)
+
+insert payloads in .jpg using exiftool then upload the file as .jpg
+
+Double extention (example.php.jpg) is applicable whrn php verson is 5 or less.

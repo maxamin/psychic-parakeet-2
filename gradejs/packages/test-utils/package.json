@@ -1,0 +1,27 @@
+{
+  "name": "@gradejs-public/test-utils",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "prettier": "prettier --check ./src",
+    "typecheck": "tsc --project tsconfig.build.json --noEmit"
+  },
+  "engines": {
+    "node": "^16.14.2"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@aws-sdk/client-sqs": "^3.87.0",
+    "supertest": "^6.2.2",
+    "typeorm": "0.2.45",
+    "typeorm-naming-strategies": "^4.1.0",
+    "typeorm-transactional-tests": "^1.1.5",
+    "typescript": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.4.1",
+    "@types/supertest": "^2.0.12",
+    "jest": "^27.5.1",
+    "ts-jest": "^27.1.4"
+  }
+}

@@ -1,0 +1,20 @@
+<div class="container">
+	<h1> {{user.Username}}<small> {{user.Followers}} followers</small></h1>
+
+<div class="row">
+	<div class="col-md-9">
+		<textarea ng-model="user.Entry" class="form-control" style="height: 500px"></textarea>
+
+		<button class="btn btn-primary" ng-click="save()">Save</button>
+	</div>
+
+	<div class="col-md-3">
+		<h3>Following</h3>
+
+		<div ng-repeat="u in user.Following track by $index">
+			<a ui-sref="user({user: u})">{{u}}</a>
+		</div> 
+
+	</div>
+</div>
+</div>

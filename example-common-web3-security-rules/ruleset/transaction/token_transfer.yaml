@@ -1,0 +1,28 @@
+- description: The recipient address is a token contract address.
+  level: 3
+  logic: bool(token_transfer) and bool(get_token(token_transfer.to))
+- description: The recipient address does NOT exist on the current chain.
+  level: 2
+  logic: bool(token_transfer) and chain not in get_address(token_transfer.to).used_chain_list
+- description: You've NEVER transferred to this address before.
+  level: 1
+  logic: bool(token_transfer) and get_addr_to_addr_transfer_count(token_transfer.from_, tokenTransfer.to, chain) == 0
+- description: The recipient address is a contract address but NOT multi-signed.
+  level: 3
+  conditions:
+    - condition: A
+      logic: bool(token_transfer)
+      description: The transaction type is token transfer.
+    - condition: B
+      logic: bool(get_contract(token_transfer.to))
+      description: The recipient address is contract address.
+    - condition: C
+      logic: not get_contract(token_transfer.to).is_multisig
+      description: The recipient address is not multisig address.
+  logic: A and B and C
+- description: The recipient ENS address has zero-width joiner.
+  level: 2
+  logic: bool(token_transfer) and has_risk_ens_character(get_ens_name(token_transfer.to))
+- description: The recipient address is a multisig address that exists on ANOTHER chain.
+  level: 3
+  logic: bool(token_transfer) and any([i.is_multisig for i in get_address(token_transfer.to).contract_list])

@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+set -u
+# get PROJECTNAME var 
+DIR=$(cat /opt/codedeploy-agent/deployment-root/deployment-instructions/${DEPLOYMENT_GROUP_ID}_most_recent_install)
+cd $DIR/deployment-archive
+source codedeploy/.env_vars
+COMPOSE="docker-compose -p ${PROJECTNAME} -f docker-compose.yml"
+${COMPOSE} down | true

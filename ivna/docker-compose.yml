@@ -1,0 +1,22 @@
+version: "3.3"
+services:
+       mongo:
+             container_name: mongo
+             image: mongo:latest
+             restart: always
+             volumes:
+              - mongo:/data/db
+             ports:
+               - 27017:27017
+       ivna:
+            build: .
+            ports:
+             - 8000:8000
+            environment:
+             - MONGO_URI=mongodb://mongo:27017
+             - DB_NAME=task-manager
+             - PORT:8000
+            depends_on:
+             - mongo
+volumes:
+  mongo : {}

@@ -1,0 +1,71 @@
+<div>
+	<h1>Admin Files</h1>
+	<p>Click on a file to obtain the link and the file choose command. Click on the link you would like to use. It will be copied to clipboard automatically.</p>
+	<ul id="admfileslist"></ul>
+	<div id="admfileslistcopyarea"></div>
+</div>
+
+<style type="text/css">
+	#admfileslist {
+		list-style-type: square;
+		padding-left: 20px;
+		cursor: copy;
+	}
+	#admfileslistcopyarea input{
+		width: 90%;
+	}
+</style>
+
+<script type='text/javascript'>
+	// <![CDATA[
+	/*********************************************************
+	 * File admin JS --- lists all available files
+	 *********************************************************
+	 */
+	//define get domain name function
+	var fnGetDomainName = function(){
+		domain = window.location.host.match(/^[^\.]*\.(.*)$/);
+		if (domain) {
+			return domain[1];
+		} else {
+			throw new Error('Unable to parse domain name.');
+		}
+	};
+
+	//define clickhandler for files
+	var fnFilesClickHandler = function (e) {
+		sFileName = $(this).text();
+		sFileMaterialURL = 'javascript:chooseMaterial(&quot;' + sFileName + '&quot;)';
+		sFileUrl = '//clonecloud.'+fnGetDomainName()+'/files/' + sFileName;
+		sFileCopyCode = '<p><input value="'+sFileName+'" type="text" readonly></p>'+
+						'<p><input value="'+sFileUrl+'" type="text" readonly></p>'+
+						'<p><input value="'+sFileMaterialURL+'" type="text" readonly></p>';
+
+		$("#admfileslistcopyarea").html(sFileCopyCode);
+		$("#admfileslistcopyarea input").click(function(){
+			$(this).select();
+			document.execCommand("copy");
+		});
+	}
+
+	//define list adder function
+	var fnAddFilesToList = function (oJSON) {
+		for (let sFile of oJSON) {
+			$("#admfileslist").append("<li>" + sFile + "</li>");
+		}
+		$("#admfileslist li").click(fnFilesClickHandler);
+	};
+
+	// define file getter function
+	var fnGetFilesFromServer = function () {
+		sUrl = "//"+window.location.hostname+"/admin/get_files.cgi";
+		oJSONObjects = $.getJSON(sUrl, fnAddFilesToList);
+	};
+
+	//trigger getting files when document ready
+	$(document).ready(function () {
+		fnGetFilesFromServer();
+	});
+
+	// ]]>
+</script>

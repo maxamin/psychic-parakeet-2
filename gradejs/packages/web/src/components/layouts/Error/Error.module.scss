@@ -1,0 +1,43 @@
+@import '~styles/_vars.scss';
+@import '~styles/responsive.scss';
+
+.errorPage {
+  padding-top: 36px;
+  padding-bottom: 20px;
+
+  @include mobile-and-tablet {
+    padding-top: 16px;
+    padding-bottom: 8px;
+  }
+}
+
+.textContent {
+  max-width: 786px;
+  margin-bottom: 36px;
+
+  @include mobile-and-tablet {
+    margin-bottom: 24px;
+  }
+}
+
+.searchWrapper {
+  max-width: 884px;
+  width: 100%;
+}
+
+.host {
+  color: $gray-text;
+  margin-bottom: 12px;
+}
+
+.heading {
+  margin-bottom: 16px;
+}
+
+.desc {
+  font-size: 17px;
+
+  @include mobile-and-tablet {
+    font-size: 14px;
+  }
+}

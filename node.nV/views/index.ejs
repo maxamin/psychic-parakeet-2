@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include partials/head %>
+  </head>
+  <body>
+     <% include partials/header %>
+    <section class="job-form-section job-form-section--image">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2">
+            <div class="job-form-box">
+              <h2 class="heading">Find a <span class="accent">job</span> you will <span class="accent">love</span>.</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+	
+    <section>
+        
+      <div class="container">
+		   <h4 class="heading">Job Listings</h4>
+        <% for(var i=0; i < listings.length; i++) { %>
+		<div class="job-listing--featured">
+          <div class="row">
+            <div class="col-sm-12 col-md-2">
+              <div class="row">
+                <div class="col-xs-10">
+                  <h4 class="job__title"><a href="/login?next=/review?id=<%=listings[i]._id%>"> <%- listings[i].name %></a></h4>
+                  <p class="job__company">
+                     
+                    <%- listings[i].owner.name %>                  
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-2 col-md-8 col-md-offset-0">
+              <p><%- listings[i].description %></p>
+            </div>
+            <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
+              <p><%- listings[i].deadline %></p>
+            </div>
+          </div>
+        </div>
+        <% } %>
+		
+   
+       
+      </div>
+    </section>
+	
+   
+   
+   
+    <section style="background-image: url('public/images/startup.jpg'); " class="section-divider">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <p>Start searching for your new job now! <a href="/login" class="btn btn-white">See our job offers</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <% include partials/footer %>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <% include ../partials/head %>
+  <body class=""> 
+  	<% include ../partials/header %>
+
+	    <section style="background: #fafafa;">
+	      <div class="container">
+	        <div class="breadcrumbs">
+	          <ul class="breadcrumb">
+	             <li><a href="/homepage">Dasbhboard</a></li>
+	            <li>Review Applications</li>
+	          </ul>
+	        </div>
+	        <h1 class="heading">Review Applications</a></small></h1>
+	      </div>
+	    </section>
+	   
+      <section>
+        
+        <div class="container">
+          <% for(var i=0; i < applications.length; i++) { %>
+  		<div class="job-listing">
+            <div class="row">
+              <div class="col-sm-12 col-md-6">
+                <div class="row">
+                  <div class="col-xs-10">
+                    <h4 class="job__title">
+						<a href="/edit_application?id=<%= applications[i].id%>" > <%= applications[i]._listing.owner.name %></a>
+					</h4>
+                    <p class="job__company">
+                     
+                      <%= applications[i]._listing.name %>        
+                    </p>
+                  </div>
+                </div>
+              </div>
+            
+              <div class="col-xs-10 col-xs-offset-2 col-sm-4 col-sm-offset-0 col-md-3">
+                <p><%= applications[i].reasonApplied %></p>
+              </div>
+              <div class="col-xs-10 col-xs-offset-2 col-sm-2 col-sm-offset-0 col-md-1">
+                <p><%= applications[i].background %></p>
+              </div>
+            </div>
+          </div>
+          <% } %>
+		
+   
+       
+        </div>
+      </section>
+	   
+  <% include ../partials/footer %>
+  </body>
+</html>

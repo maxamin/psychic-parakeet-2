@@ -1,0 +1,101 @@
+<div>
+	<h1>Admin Calendar Config</h1>
+	<div id="admcalconfedit">
+			<div class="admcalconfeditrow">
+				<label for="admcalconfdaystart">Day Start (HH:MM):</label>
+				<input id="admcalconfdaystart">
+			</div>
+			<div class="admcalconfeditrow">
+				<label for="admcalconfslotduration">Slot Duration (HH:MM):</label>
+				<input id="admcalconfslotduration">
+			</div>
+	</div>
+	<button type="button" id="admcalconfsave">Save to Server</button>
+</div>
+<style type="text/css">
+	#admcalconfedit {
+		display: table;
+    	vertical-align: middle;
+    	border-spacing: 0 8px;
+    	width:100%;
+    	border: 0;
+	}
+
+	#admcalconfedit > .admcalconfeditrow{
+		display: table-row;
+	}
+
+	#admcalconfedit label, #admcalconfedit input{
+	display: table-cell;
+	}
+
+	#admcalconfedit label{
+		width: 1%;
+		white-space: nowrap;
+		padding-right: 13px;
+	}
+
+	#admcalconfedit input {
+		width: 100%;
+	}
+</style>
+
+<script type='text/javascript'>
+	// <![CDATA[
+	/*********************************************************
+	 * calendar config admin JS --- configure the
+	 * configuration of the calendar widget
+	 *********************************************************
+	 */
+
+	//define save to server handler
+	var fnSaveCalendarConfToServer = function () {
+		//collect the data
+		var oCalendarConf = {}
+		//add values and trim whitespace
+		oCalendarConf.dayStart = $("#admcalconfdaystart").val().replace(/ /g, "");
+		oCalendarConf.slotDuration =  $("#admcalconfslotduration").val().replace(/ /g, "");
+
+		// create and send the save request
+		var oXhr = new XMLHttpRequest();
+		oXhr.withCredentials = true; // is necessary because of the digest authentication currently used
+		var oFormData = new FormData();
+		var sUrl = "//"+window.location.hostname+"/admin/update_calendarconf.cgi";
+		oFormData.append("calendarconf", JSON.stringify(oCalendarConf));
+		oXhr.open("POST", sUrl);
+		oXhr.send(oFormData);
+	};
+
+	//define list adder function
+	var fnAddCalendarConfigToForm = function (oJSON) {
+
+		let sDayStart = oJSON.dayStart ? oJSON.dayStart : "08:00";
+		let sSlotDuration = oJSON.slotDuration ? oJSON.slotDuration: "00:30"
+
+		//backup solution
+		$("#admcalconfdaystart").val(sDayStart);
+		$("#admcalconfslotduration").val(sSlotDuration);
+
+		//time picker solution
+		$("#admcalconfdaystart").wickedpicker({twentyFour:true, now: sDayStart});
+		$("#admcalconfslotduration").wickedpicker({twentyFour:true, now:  sSlotDuration});
+	};
+
+	// define calendar config getter function
+	var fnGetCalendarConfFromServer = function () {
+		sUrl = "//"+window.location.hostname+"/admin/get_calendarconf.cgi";
+		oJSONObjects = $.getJSON(sUrl, fnAddCalendarConfigToForm);
+	};
+
+	//trigger getting calendar config when document ready
+	$(document).ready(function () {
+		fnGetCalendarConfFromServer();
+	});
+
+	// add clickhandler fpr save to server button
+	$("#admcalconfsave").click(function(){
+		fnSaveCalendarConfToServer();
+	});
+
+	// ]]>
+</script>

@@ -1,0 +1,18 @@
+{
+  "name": "@escrin/evm",
+  "version": "1.0.0-rc.5",
+  "license": "MIT OR Apache-2.0",
+  "author": "Nick Hynes <nick@escrin.org>",
+  "type": "module",
+  "include": [
+    "foundry.toml",
+    "src",
+    "abi"
+  ],
+  "exports": {
+    "./abi": "./abi/index.js"
+  },
+  "scripts": {
+    "build": "make build"
+  }
+}

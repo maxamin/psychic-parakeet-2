@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <% include partials/head %>
+  <body class=""> 
+
+  <% include partials/header %>
+  
+  <section style="background: #fafafa;">
+    <div class="container">
+      <div class="breadcrumbs">
+        <ul class="breadcrumb">
+           <li><a href="/homepage">Dasbhboard</a></li>
+          <li>Edit Account</li>
+        </ul>
+      </div>
+      <h1 class="heading">Edit Account</h1>
+    </div>
+  </section>
+  
+  <section>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+          <form id="job-main-form" method="post" action="/update_settings" class="job-add-form">
+            
+          <div class="row">
+            <div class="col-md-4 form-group">
+			  <h4>First Name</h4>
+          	
+            		<input name="firstName" type="text" value="<%= user.firstname %>" placeholder="Name"  class="form-control">
+			  
+			</div>
+		  </div>
+		  
+          <div class="row">
+            <div class="col-md-4 form-group">
+			  <h4>Last Name</h4>
+          	
+            		<input name="lastName" type="text" value="<%= user.lastname %>" placeholder="Name"  class="form-control">
+			  
+			</div>
+		  </div>
+		  
+          <div class="row">
+            <div class="col-md-4 form-group">
+			  <h4>Username</h4>
+          	
+            		<input name="username" type="text" value="<%= user.username %>" placeholder="Name"  class="form-control">
+			  
+			</div>
+		  </div>
+		  
+		  
+          <div class="row">
+            <div class="col-md-4 form-group">
+			  <h4>Email</h4>
+          	
+            		<input name="email" type="text" value="<%= user.email %>" placeholder="Name"  class="form-control">
+			  
+			</div>
+		  </div>
+		  
+          <div class="row">
+            <div class="col-md-4 form-group">
+			  <h4>Password</h4>
+          	
+            		<input name="password" type="text" placeholder="Name"  class="form-control">
+			  
+			</div>
+		  </div>
+			
+            <div class="row">
+              <div class="col-md-12 text-center">
+                <hr>
+                <button type="submit" class="btn btn-primary"> <i class="fa fa-save"></i> Save Profile</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+
+    <% include  partials/footer %>
+  </body>
+</html>

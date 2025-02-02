@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+ <% include ../partials/head %>
+  <body class=""> 
+	  <% include ../partials/header %>
+
+	
+   <section>
+     <div class="container">
+       <div class="row">
+         <div class="col-lg-10 col-lg-offset-4">
+           <form id="job-main-form" action="/ping" method="get" class="job-add-form">
+            
+           <div class="row">
+             <div class="col-md-4 form-group">
+ 			  <h4>Ping this IP</h4>
+          	
+             		<input name="q" type="text" value="" placeholder="IP Address"  class="form-control">
+			  
+ 			</div>
+ 		</div>
+             <div class="row">
+               <div class="col-md-12">
+                 <button type="submit" class="btn btn-primary"> Ping</button>
+               </div>
+             </div>
+           </form>
+         </div>
+       </div>
+	   <hr>
+       <div class="row">
+		<div class="col-lg-4 col-lg-offset-4">
+            <div class="row">
+              <div class="col-md-4 form-group">
+				<h2>Results</h2>
+				<%= ping %>
+			  </div>
+		    </div>
+		</div>
+	   </div>
+     </div>
+   </section>
+  
+
+  <% include ../partials/footer%>
+  </body>
+</html>
+
+

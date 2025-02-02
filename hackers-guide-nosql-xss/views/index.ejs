@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include partials/head %>
+</head>
+<body>
+<div class="jumbotron text-center">
+    <h1>The Hacker's Guide to XSS Demo</h1>
+    <h5>Powered by <a href="https://www.oracle.com/cloud" target="_blank">Oracle Cloud</a></h5>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-8">
+            <h3 class="text-primary">Public comments</h3>
+            <hr/>
+            <% include partials/comments %>
+        </div>
+        <div class="col-sm-4">
+            <h3 class="text-success">Login/Register</h3>
+            <hr/>
+            If you want to add your own comment on this sessions, please <a class="text-success" href="/login-register">login or
+            register</a>.
+        </div>
+    </div>
+</div>
+</body>
+<% include partials/script %>
+</html>

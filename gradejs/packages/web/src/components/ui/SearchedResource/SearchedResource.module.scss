@@ -1,0 +1,84 @@
+@import '~styles/_vars.scss';
+@import '~styles/responsive.scss';
+
+.searchedResource {
+  display: flex;
+  align-items: flex-start;
+
+  @include mobile-and-tablet {
+    flex-direction: column;
+  }
+}
+
+.searchedResourceImageWrapper {
+  display: flex;
+  flex-shrink: 0;
+  margin-right: 24px;
+  width: 48px;
+  height: 48px;
+
+  border-radius: 50%;
+  overflow: hidden;
+
+  background: $gray-surface;
+
+  @include mobile-and-tablet {
+    width: 44px;
+    height: 44px;
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+}
+
+.searchedResourceImage {
+  width: 100%;
+  object-fit: cover;
+}
+
+.searchedResourceContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.searchedResourceTitle {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.searchedResourceHighlight {
+  color: $gray-text;
+}
+
+.searchedResourceHighlightSkeleton {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.searchedResourceScanDate {
+  color: $gray-text;
+}
+
+.searchedResourceSubtitle {
+  display: flex;
+  align-items: center;
+}
+
+.searchedResourceRescanButton {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 14px;
+  padding: 0;
+
+  cursor: pointer;
+
+  appearance: none;
+  border: none;
+  background: transparent;
+
+  color: $blue-accent;
+  font-weight: 500;
+}
+
+.searchedResourceRescanButtonIcon {
+  margin-right: 4px;
+}

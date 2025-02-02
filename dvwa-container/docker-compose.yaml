@@ -1,0 +1,19 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    links:
+      - mysql
+    environment:
+      DATABASE_USERNAME: dvwa
+      DATABASE_PASSWORDE: dvwa
+      DATABASE_NAME: dvwa
+      DATABASE_SERVER: mysql
+  mysql:
+    image: mariadb:10
+    environment:
+      MARIADB_ROOT_PASSWORD: password
+      MARIADB_USER: dvwa
+      MARIADB_PASSWORD: dvwa
+      MARIADB_DATABASE: dvwa  

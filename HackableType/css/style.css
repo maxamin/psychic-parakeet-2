@@ -1,0 +1,40 @@
+/* custom styles */
+
+#left {
+	float:left;	
+	margin-top: 40px;
+}
+
+#content {
+	margin-left: 200px;
+	padding: 30px;
+	width: 700px;
+	margin-top: 40px;
+}
+
+#footer {
+	color: gray;
+	text-align: center;
+	margin-top: 50px;
+	border-top: 1px solid #f1f1f1;
+	padding: 10px;
+	font-size:smaller;
+}
+
+#main { margin-top: 40px;}
+
+
+
+.description {
+	padding: 0 0 20px;
+	font-size: 1.2em;
+	color: #006400;
+}
+
+.hintOpenLink, .hintCloseLink {
+	font-size: .8em;
+	text-decoration: underline;
+}
+
+th { text-align:left; border-bottom:1px solid black;}
+.message { padding: 10px; border-bottom: 1px solid silver; margin:3px; }

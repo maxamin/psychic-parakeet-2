@@ -1,0 +1,35 @@
+@import '~styles/responsive.scss';
+
+.meta {
+  display: grid;
+  grid-gap: 16px;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+}
+
+.metaIcon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 16px;
+}
+
+.metaText {
+  font-weight: 500;
+}
+
+.skeleton {
+  display: flex;
+  align-items: center;
+}
+
+.skeletonIcon {
+  flex-shrink: 0;
+  margin-right: 23px;
+}

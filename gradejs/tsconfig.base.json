@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "commonjs",
+    "strict": true,
+    "strictFunctionTypes": true,
+    "esModuleInterop": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noErrorTruncation": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "lib": ["es2015", "dom"]
+  }
+}

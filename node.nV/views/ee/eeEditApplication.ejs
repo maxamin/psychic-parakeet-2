@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <% include ../partials/head %>
+  <body class=""> 
+
+  <% include ../partials/header %>
+  
+  <section style="background: #fafafa;">
+    <div class="container">
+      <div class="breadcrumbs">
+        <ul class="breadcrumb">
+           <li><a href="/homepage">Dasbhboard</a></li>          
+		   <li>Review Listing</li>
+        </ul>
+      </div>
+      <h1 class="heading"><%= application._listing.owner.name %></h1>
+
+    </div>
+  </section>
+  
+  <section>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+          <form id="job-main-form" method="post" action="/update_application" class="job-add-form">
+            
+          <div class="row">
+            <div class="col-md-4 form-group">
+			  <h4>Job Title</h4>
+            	<p><%= application._listing.name %></p>
+			</div>
+		  </div>
+		  
+          <div class="row">
+            <div class="col-md-12 form-group">
+			  <h4>Job Description</h4>
+            	<p><%= application._listing.description %></p>
+			</div>
+		  </div>
+		  
+		  
+            <div class="row">
+              <div class="col-md-12 form-group">
+                <label for="company_name">Reason You Are Applying</label>
+              	<textarea name="reasonApplied" rows="3" class="form-control"><%= application.reasonApplied %></textarea>
+                <p class="help-block text-small">Tell use why you're applying</p>
+              </div>
+            </div>
+			
+            <div class="row">
+              <div class="col-md-12 form-group">
+                <label for="company_description">Tell use about yourself</label>
+                <textarea name="background"  rows="3" class="form-control"><%= application.background %></textarea>
+                <p class="help-block text-small">Write a little information about your background relevant to this posting.</p>
+              </div>
+            </div>
+			
+         	<input type="hidden" name="id" value=<%= application._id %>>
+            <div class="row">
+              <div class="col-md-12 text-center">
+                <hr>
+                <button type="submit" class="btn btn-primary"> <i class="fa fa-magic"></i> Save Application</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+
+    <% include ../partials/footer %>
+  </body>
+</html>

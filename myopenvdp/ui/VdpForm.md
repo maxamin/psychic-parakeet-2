@@ -1,0 +1,330 @@
+# VdpForm component API
+
+## Properties
+
+- **`pgp-key`** (String | Array) [Required]
+  - **Description**: A PGP public key or an array of PGP public keys for which each entry must be an object with 2 properties : 'name' containing the name to be displayed and 'key' containing the PGP key
+  - **Examples**:
+    - `-----BEGIN PGP PUBLIC KEY BLOCK-----\n...\n-----END PGP PUBLIC KEY BLOCK-----`
+    - `[{"name":"Key 1","key":"-----BEGIN PGP PUBLIC KEY BLOCK-----\n...\n-----END PGP PUBLIC KEY BLOCK-----"},{"name":"Key 2","key":"-----BEGIN PGP PUBLIC KEY BLOCK-----\n...\n-----END PGP PUBLIC KEY BLOCK-----"}]`
+- **`captcha-provider`** (Function)
+  - **Description**: Provider of the captcha data (async function)
+  - **Function form**: `() => Object`
+  - **Returns** Object:
+    - **Description**: Captcha data
+    - **Props**:
+      - **`key`** (String) [Required]
+        - **Description**: Unique key identifying this captcha data
+        - **Example**:
+          - `8ec3d9f8c7fb0caa15f7edc6630c803d`
+      - **`url`** (String) [Required]
+        - **Description**: URL of the captcha image
+        - **Examples**:
+          - `data:image/jpeg;base64:...`
+          - `https://backend/captcha-8ec3d9f8c7fb0caa15f7edc6630c803d.jpeg`
+      - **`width`** (Number)
+        - **Description**: Width of the captcha image in pixels
+        - **Example**:
+          - `300`
+      - **`height`** (Number)
+        - **Description**: Height of the captcha image in pixels
+        - **Example**:
+          - `64`
+- **`attachment-max-size-bytes`** (Number)
+  - **Description**: Maximum size of individual attachments, in bytes
+  - **Default value**: `2097152`
+- **`attachment-allowed-extensions`** (Array)
+  - **Description**: A list of allowed extension for attachments
+  - **Default value**: `['jpg', 'jpeg', 'png', 'txt']`
+  - **Example**:
+    - `['txt', 'png', 'jpg']`
+- **`logs-auto-scroll`** (Boolean)
+  - **Description**: Automatically scroll to submission logs when a report is submitted
+  - **Accepted values**: `true` | `false`
+  - **Default value**: `true`
+- **`logs-timestamp-format`** (String)
+  - **Description**: Format of the timestamps for submission logs. See https://github.com/felixge/node-dateformat#mask-options.
+  - **Default value**: `yyyy/mm/dd HH:MM:ss.l`
+  - **Examples**:
+    - `isoDateTime`
+    - `UTC:h:MM:ss TT Z`
+- **`notifications-position`** (String)
+  - **Description**: Default position for notifications
+  - **Accepted values**: `top-left` | `top-right` | `bottom-left` | `bottom-right` | `top` | `bottom` | `left` | `right` | `center`
+  - **Default value**: `top`
+- **`success-notification-position`** (String)
+  - **Description**: Position for success notification. Inherits from 'notifications-position' if not set
+  - **Accepted values**: `top-left` | `top-right` | `bottom-left` | `bottom-right` | `top` | `bottom` | `left` | `right` | `center`
+- **`errors-notification-position`** (String)
+  - **Description**: Position for errors notification. Inherits from 'notifications-position' if not set
+  - **Accepted values**: `top-left` | `top-right` | `bottom-left` | `bottom-right` | `top` | `bottom` | `left` | `right` | `center`
+- **`disclosure-policy-notification-position`** (String)
+  - **Description**: Position for disclosure policy notification. Inherits from 'notifications-position' if not set
+  - **Accepted values**: `top-left` | `top-right` | `bottom-left` | `bottom-right` | `top` | `bottom` | `left` | `right` | `center`
+- **`translations`** (object)
+  - **Description**: Custom translations
+  - **Props**:
+    - **`vulnerabilitySummaryTitle`** (String)
+      - **Description**: Title for vulnerability summary section
+    - **`reportTitleLabel`** (String)
+      - **Description**: Label for report title field
+    - **`reportTitlePlaceholder`** (String)
+      - **Description**: Placeholder for report title field
+    - **`productLabel`** (String)
+      - **Description**: Label for product field
+    - **`productPlaceholder`** (String)
+      - **Description**: Placeholder for product field
+    - **`pgpKeyLabel`** (String)
+      - **Description**: Label for PGP key field
+    - **`pgpKeyPlaceholder`** (String)
+      - **Description**: Placeholder for PGP key field
+    - **`cvss3ScoreTitle`** (String)
+      - **Description**: Title for CVSS3 section
+    - **`cvss3CardScoreTitle`** (String)
+      - **Description**: Title for CVSS3 severity card
+    - **`cvss3CardSeverityTitle`** (String)
+      - **Description**: Title for CVSS3 severity card
+    - **`cvss3AttackVectorLabel`** (String)
+      - **Description**: Label for CVSS3 Attack Vector field
+    - **`cvss3UserInteractionLabel`** (String)
+      - **Description**: Label for CVSS3 User Interaction field
+    - **`cvss3AttackComplexityLabel`** (String)
+      - **Description**: Label for CVSS3 Attack Complexity field
+    - **`cvss3ConfidentialityLabel`** (String)
+      - **Description**: Label for CVSS3 Confidentiality field
+    - **`cvss3PrivilegesRequiredLabel`** (String)
+      - **Description**: Label for CVSS3 Privileges Required field
+    - **`cvss3IntegrityLabel`** (String)
+      - **Description**: Label for CVSS3 Integrity field
+    - **`cvss3ScopeLabel`** (String)
+      - **Description**: Label for CVSS3 Scope field
+    - **`cvss3AvailabilityLabel`** (String)
+      - **Description**: Label for CVSS3 Availability field
+    - **`cvss3AvNetworkLabel`** (String)
+      - **Description**: Label for CVSS3 Network Attack Vector field
+    - **`cvss3AvAdjacentLabel`** (String)
+      - **Description**: Label for CVSS3 Adjacent Attack Vector field
+    - **`cvss3AvLocalLabel`** (String)
+      - **Description**: Label for CVSS3 Local Attack Vector field
+    - **`cvss3AvPhysicalLabel`** (String)
+      - **Description**: Label for CVSS3 Physical Attack Vector field
+    - **`cvss3UiNoneLabel`** (String)
+      - **Description**: Label for CVSS3 None User Interaction field
+    - **`cvss3UiRequiredLabel`** (String)
+      - **Description**: Label for CVSS3 Required User Interaction field
+    - **`cvss3AcLowLabel`** (String)
+      - **Description**: Label for CVSS3 Low Attack Complexity field
+    - **`cvss3AcHighLabel`** (String)
+      - **Description**: Label for CVSS3 High Attack Complexity field
+    - **`cvss3CNoneLabel`** (String)
+      - **Description**: Label for CVSS3 None Confidentiality field
+    - **`cvss3CLowLabel`** (String)
+      - **Description**: Label for CVSS3 Low Confidentiality field
+    - **`cvss3CHighLabel`** (String)
+      - **Description**: Label for CVSS3 High Confidentiality field
+    - **`cvss3PrNoneLabel`** (String)
+      - **Description**: Label for CVSS3 None Privileges Required field
+    - **`cvss3PrLowLabel`** (String)
+      - **Description**: Label for CVSS3 Low Privileges Required field
+    - **`cvss3PrHighLabel`** (String)
+      - **Description**: Label for CVSS3 High Privileges Required field
+    - **`cvss3INoneLabel`** (String)
+      - **Description**: Label for CVSS3 None Integrity field
+    - **`cvss3ILowLabel`** (String)
+      - **Description**: Label for CVSS3 Low Integrity field
+    - **`cvss3IHighLabel`** (String)
+      - **Description**: Label for CVSS3 High Integrity field
+    - **`cvss3SUnchangedLabel`** (String)
+      - **Description**: Label for CVSS3 Unchanged Scope field
+    - **`cvss3SChangedLabel`** (String)
+      - **Description**: Label for CVSS3 Changed Scope field
+    - **`cvss3ANoneLabel`** (String)
+      - **Description**: Label for CVSS3 None Availability field
+    - **`cvss3ALowLabel`** (String)
+      - **Description**: Label for CVSS3 Low Availability field
+    - **`cvss3AHighLabel`** (String)
+      - **Description**: Label for CVSS3 High Availability field
+    - **`reporterInformationTitle`** (String)
+      - **Description**: Title for reporter information section
+    - **`reporterNameLabel`** (String)
+      - **Description**: Label for reporter name field
+    - **`reporterNamePlaceholder`** (String)
+      - **Description**: Placeholder for reporter name field
+    - **`reporterEmailLabel`** (String)
+      - **Description**: Label for reporter email field
+    - **`reporterEmailPlaceholder`** (String)
+      - **Description**: Placeholder for reporter email field
+    - **`reporterPgpKeyLabel`** (String)
+      - **Description**: Label for reporter PGP public key field
+    - **`technicalDetailsTitle`** (String)
+      - **Description**: Title for technical details section
+    - **`endpointLabel`** (String)
+      - **Description**: Label for endpoint field
+    - **`endpointPlaceholder`** (String)
+      - **Description**: Placeholder for endpoint field
+    - **`vulnerablePartLabel`** (String)
+      - **Description**: Label for vulnerable part field
+    - **`vulnerablePartPlaceholder`** (String)
+      - **Description**: Placeholder for vulnerable part field
+    - **`partNameLabel`** (String)
+      - **Description**: Label for vulnerable part name field
+    - **`partNamePlaceholder`** (String)
+      - **Description**: Placeholder for vulnerable part name field
+    - **`payloadLabel`** (String)
+      - **Description**: Label for payload field
+    - **`payloadPlaceholder`** (String)
+      - **Description**: Placeholder for payload field
+    - **`technicalEnvironmentLabel`** (String)
+      - **Description**: Label for technical details field
+    - **`technicalEnvironmentPlaceholder`** (String)
+      - **Description**: Placeholder for technical details field
+    - **`technicalDetailsLabel`** (String)
+      - **Description**: Label for technical details field
+    - **`technicalDetailsMarkdown`** (String)
+      - **Description**: Template for technical details markdown usage explaination (with {{markdown}} variable being an HTML link to Markdown documentation)
+    - **`technicalDetailsEdit`** (String)
+      - **Description**: Label for technical details edition tab
+    - **`technicalDetailsPreview`** (String)
+      - **Description**: Label for technical details preview tab
+    - **`attachmentsPlaceholder`** (String)
+      - **Description**: Placeholder template for attachments (with {{extensions}} variable being the list of allowed file extensions and {{maxSize}} variable being the human readable maximum size for each attachment)
+    - **`attachmentsErrorsTitle`** (String)
+      - **Description**: Title for attachments error notification
+    - **`attachmentTooBigError`** (String)
+      - **Description**: Attachment too big error message (with {{file}} variable being the name of the attachment, {{size}} variable being the human readable size of the attachment and {{maxSize}} variable being the human readable maximum size for each attachment)
+    - **`attachmentTypeError`** (String)
+      - **Description**: Attachment type not allowed error message (with {{file}} variable being the name of the attachment)
+    - **`captchaLabel`** (String)
+      - **Description**: Label for captcha field
+    - **`captchaPlaceholder`** (String)
+      - **Description**: Placeholder for captcha field
+    - **`disclosurePolicyCheckbox`** (String)
+      - **Description**: Label for disclosure policy checkbox (with {{disclosurePolicy}} variable being an HTML link to the disclosure policy)
+    - **`disclosurePolicyLabel`** (String)
+      - **Description**: Label for disclosure policy link
+    - **`disclosurePolicyHtml`** (String)
+      - **Description**: Disclosure policy (in HTML)
+    - **`disclosurePolicyAcceptLabel`** (String)
+      - **Description**: Label for Accept button in disclosure policy notification
+    - **`disclosurePolicyRefuseLabel`** (String)
+      - **Description**: Label for Refuse button in disclosure policy notification
+    - **`intellectualPropertyLabel`** (String)
+      - **Description**: Label for Intellectual Property checkbox
+    - **`intellectualPropertyCheckbox`** (String)
+      - **Description**: Label for Intellectual Property error message
+    - **`encryptedBeforeSubmission`** (String)
+      - **Description**: Label for encrypted section icon
+    - **`sendReportLabel`** (String)
+      - **Description**: Label for send report button
+    - **`maxChars`** (String)
+      - **Description**: Template for maximum characters field label indicator (with {{max}} variables being the number of maximum allowed characters)
+    - **`valueMustNotBeBlank`** (String)
+      - **Description**: Error message indicating that a field should not be blank/empty
+    - **`notificationDismissLabel`** (String)
+      - **Description**: Label for Dismiss button in notifications
+    - **`formErrorsTitle`** (String)
+      - **Description**: Title for form errors notification
+    - **`formInvalidMessage`** (String)
+      - **Description**: Error message indicating that the form is invalid
+    - **`errorFieldIsEmpty`** (String)
+      - **Description**: Template error message for indicating that a field is blank/empty (with {{field}} variable being the name of the field
+    - **`errorFieldIsNotAccepted`** (String)
+      - **Description**: Template error message for indicating that a checkbox is not checked (with {{field}} variable being the name of the field
+    - **`errorCvssAreNotFilled`** (String)
+      - **Description**: Template error message for indicating that the CVSS field is not correctly filled (with {{field}} variable being the name of the field
+    - **`unexpectedError`** (String)
+      - **Description**: Template error message for unexpected errors (with {{message}} variable being the message of the error)
+    - **`submissionCompressingReportLabel`** (String)
+      - **Description**: Label for report ZIP compression stage in the submission logs
+    - **`submissionCompressingReportError`** (String)
+      - **Description**: Error message for report ZIP compression stage in the submission logs
+    - **`submissionCompressingReportSuccess`** (String)
+      - **Description**: Success message for report ZIP compression stage in the submission logs
+    - **`submissionEncryptingReportLabel`** (String)
+      - **Description**: Label for report encryption stage in the submission logs
+    - **`submissionEncryptingReportSuccess`** (String)
+      - **Description**: Success message for report encryption stage in the submission logs
+    - **`submissionSendingReportLabel`** (String)
+      - **Description**: Label for report submission stage in the submission logs
+    - **`submissionSendingReportSuccess`** (String)
+      - **Description**: Success message for report submission stage in the submission logs
+    - **`submissionSendingReportTooBigError`** (String)
+      - **Description**: Error message for report submission stage in the submission logs
+    - **`submissionReportDownloadLabel`** (String)
+      - **Description**: Label for report download stage in the submission logs
+    - **`submissionReportDownloadMessage`** (String)
+      - **Description**: Success message for report submission stage in the submission logs
+    - **`submissionReportSentLabel`** (String)
+      - **Description**: Final message for successfull report submission in the submission logs
+  - **Example**:
+    - `{"vulnerabilitySummaryTitle": "Please describe the vulnerability","disclosurePolicyCheckbox":"I have read and I accept the {{disclosurePolicy}}"}`
+
+## Events
+
+- **@submit** -> function(`payload`, `success`, `failure`)
+  - **Description**: Emitted when the report is submitted ; one of 'success' or 'failure' callback MUST be called after receiving this event, on the component will stop to behave correctly.
+  - **Parameters**:
+    - **`payload`** (Object)
+      - **Description**: The content of the report
+      - **Props**:
+        - **`captcha`** (Object)
+          - **Description**: Captcha answer data (if captcha-provider provided)
+          - **Props**:
+            - **`key`** (String)
+              - **Description**: Unique key identifying the captcha, as given by the captcha-provider
+            - **`value`** (String)
+              - **Description**: Captcha answer given by the reporter
+        - **`report`** (Object)
+          - **Description**: The report
+          - **Props**:
+            - **`title`** (String)
+              - **Description**: The title of the report
+            - **`product`** (String)
+              - **Description**: The product affected by the vulnerability
+            - **`cvss`** (Object)
+              - **Description**: CVSS3 metrics
+              - **Props**:
+                - **`AV`** (string)
+                  - **Description**: Attack Vector
+                  - **Accepted values**: `N` | `A` | `L` | `P`
+                - **`AC`** (string)
+                  - **Description**: Attack Complexity
+                  - **Accepted values**: `L` | `H`
+                - **`PR`** (string)
+                  - **Description**: Privileges Required
+                  - **Accepted values**: `N` | `L` | `H`
+                - **`S`** (string)
+                  - **Description**: Scope
+                  - **Accepted values**: `U` | `C`
+                - **`A`** (string)
+                  - **Description**: Availability
+                  - **Accepted values**: `N` | `L` | `H`
+                - **`I`** (string)
+                  - **Description**: Integrity
+                  - **Accepted values**: `N` | `L` | `H`
+                - **`C`** (string)
+                  - **Description**: Confidentiality
+                  - **Accepted values**: `N` | `L` | `H`
+                - **`UI`** (string)
+                  - **Description**: User Interaction
+                  - **Accepted values**: `N` | `R`
+            - **`cvss_score`** (Number)
+              - **Description**: Score of the CVSS
+            - **`pgp_data`** (String)
+              - **Description**: A PGP-encrypted ZIP archive containing the report's sensitive data (description, attachments, reporter information, ...)
+            - **`hash_algorithm`** (string)
+              - **Description**: The hash algorithm used to create the 'digest' of the ZIP archive before encryption
+            - **`digest_hex`** (string)
+              - **Description**: The hash of the ZIP archive generated by the 'hash_algorithm' before encryption
+    - **`success`** (Function)
+      - **Description**: A callback to call if the report has been handled successfully
+      - **Function form**: `(message) => void 0`
+      - **Params**:
+        - **`message`** (String)
+          - **Description**: The success message
+    - **`failure`** (Function)
+      - **Description**: A callback to call if handling the report has failed
+      - **Function form**: `(message) => void 0`
+      - **Params**:
+        - **`message`** (String)
+          - **Description**: The failure message

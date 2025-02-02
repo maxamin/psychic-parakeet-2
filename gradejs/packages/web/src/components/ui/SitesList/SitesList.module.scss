@@ -1,0 +1,76 @@
+@import '~styles/_vars.scss';
+@import '~styles/responsive.scss';
+
+.sitesListWrapper {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.sitesList {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  column-gap: 10px;
+  row-gap: 50px;
+
+  @include mobile-and-tablet {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    & > * + * {
+      margin-left: 68px;
+
+      @include lg {
+        margin-left: 40px;
+      }
+    }
+  }
+}
+
+.site {
+  display: flex;
+  align-items: center;
+  min-width: 145px;
+}
+
+.imageWrapper {
+  display: flex;
+  flex-shrink: 0;
+  width: 44px;
+  margin-right: 14px;
+  background-color: $shadow;
+}
+
+.image {
+  width: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.content {
+  display: grid;
+}
+
+.title {
+  font-weight: 500;
+  color: $black;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @include mobile-and-tablet {
+    white-space: unset;
+    overflow: unset;
+    text-overflow: unset;
+  }
+}
+
+.subtitle {
+  font-size: 14px;
+  line-height: 22px;
+  color: $gray-text;
+}

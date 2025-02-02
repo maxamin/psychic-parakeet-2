@@ -1,0 +1,24 @@
+<%# encoding: UTF-8 %><%
+	require "yaml"
+	domain = "mgmsp-lab.com"
+	if File.exists?("../.ninjadvarc.yaml")
+		ninjadva_config = YAML::load_file("../.ninjadvarc.yaml")
+		domain = ninjadva_config["domain"] if ninjadva_config["domain"]
+	end
+	installdir = "/var/www"
+
+	["dashboard","myhomepage", "clonecloud"].each{|server|
+%><VirtualHost *:80>
+	ServerAdmin webmaster@localhost
+	DocumentRoot <%=installdir%>/<%=server%>
+	ServerName <%=server%>.<%=domain%>
+
+	<Directory "<%=installdir%>/<%=server%>">
+		AllowOverride All
+	</Directory>
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+<%}%>
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet

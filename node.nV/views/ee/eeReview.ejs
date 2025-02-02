@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <% include ../partials/head %>
+  <body class=""> 
+  	<% include ../partials/header %>
+
+	    <section style="background: #fafafa;">
+	      <div class="container">
+	        <div class="breadcrumbs">
+	          <ul class="breadcrumb">
+	             <li><a href="/homepage">Dasbhboard</a></li>
+	            <li>Review Listing</li>
+	          </ul>
+	        </div>
+	        <h1 class="heading"><%= listing.name%><br><small>at <a href="#"><%= listing.owner.name %></a></small></h1>
+	        <div class="job-detail-description"
+			<% if (listing.isPremium) { %>
+				<i></i><span class="label featured__label label-success">Premium</span>
+			<% } else { %>
+				<i></i><span class="label featured__label label-info">Free</span>
+			<% } %>
+	        </div>
+	      </div>
+	    </section>
+	    <section>
+	      <div class="container">
+	        <div class="row">
+	          <div class="col-lg-8">
+	            <h3>Description</h3>
+	            <p><%= listing.description %></p>
+	            <% if ((user.role==1)) {%>
+	            <div class="job-detail__apply-bottom"><a href=<%= '/apply?id='+ listing.id %> class="btn btn-primary">Apply for this job</a></div>
+				 <% } else {%>
+					<div class="job-detail__apply-bottom"><a href=<%= '/edit_listing?id='+ listing.id %> class="btn btn-default"><i class="fa fa-edit"></i>Edit Listing</a></div>
+				 <% }%>	 
+	          </div>
+	        </div>
+	      </div>
+	    </section>
+		
+  <% include ../partials/footer %>
+  </body>
+</html>

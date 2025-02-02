@@ -1,0 +1,14 @@
+.background {
+		font-size: 20vw;
+		text-align: center;
+		position: fixed;
+		width: 100vw;
+		z-index: 1;
+		color: #FFFFFF;
+		text-shadow: 0 0 50px rgba(0, 0, 0, 0.07);
+		top: 50%;
+		-webkit-transform: translateY(-50%);
+		transform: translateY(-50%);
+		font-family: "Montserrat", monospace;
+		z-index:-1;
+	}

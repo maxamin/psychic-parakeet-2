@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+    <!-- Background -->
+    <rect width="100%" height="100%" fill="#000" />
+
+    <!-- Neon Tempest Logo -->
+    <g transform="translate(100, 100)">
+        <!-- Tempest icon -->
+        <polygon points="-40,20 0,-40 40,20" fill="#ff00ff" />
+
+        <!-- Letter N -->
+        <text x="-20" y="10" font-family="Verdana" font-size="30" fill="#00ff00" transform="rotate(-15)">
+            N
+        </text>
+    </g>
+
+    <!-- Slogan -->
+
+</svg>

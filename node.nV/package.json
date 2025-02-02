@@ -1,0 +1,37 @@
+{
+  "name": "nodenv",
+  "version": "1.0.0",
+  "description": "Intentionally Vulnerable NodeJS App",
+  "main": "server.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "nVisium",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "body-parser": "^1.15.2",
+    "connect": "^3.4.1",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "csurf": "^1.9.0",
+    "ejs": "^2.5.1",
+    "express": "^4.13.4",
+    "express-session": "^1.15.3",
+    "grunt": "^1.0.1",
+    "mongoose": "^4.6.1",
+    "morgan": "^1.7.0",
+    "passport": "0.3.2",
+    "passport-local": "1.0.0",
+    "passport-local-mongoose": "^4.0.0",
+    "password-hash": "^1.2.2",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-available-tasks": "^0.6.3",
+    "grunt-env": "^0.4.4",
+    "grunt-exec": "^1.0.1",
+    "nodemon": "^1.11.0"
+  }
+}

@@ -1,0 +1,93 @@
+@import '~styles/_vars.scss';
+@import '~styles/responsive.scss';
+
+.header {
+  transition: box-shadow $transition-duration $transition-timing-function;
+}
+
+.headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 96px;
+
+  @include mobile-and-tablet {
+    min-height: 72px;
+  }
+}
+
+.default {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: $white;
+  color: $black;
+}
+
+.light {
+  color: $white;
+}
+
+.shadow {
+  box-shadow: inset 0px -1px 0px 0px $gray-border;
+}
+
+.showSearch {
+  @include mobile-and-tablet {
+    padding: 20px 0;
+    min-height: initial;
+    display: grid;
+    grid-row-gap: 22px;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 28px 52px;
+  }
+}
+
+.logo {
+  display: flex;
+  width: 129px;
+
+  @include mobile-and-tablet {
+    width: 82px;
+  }
+}
+
+.searchWrapper {
+  flex-grow: 1;
+  padding: 0 44px;
+
+  @include mobile-and-tablet {
+    grid-column: 1 / -1;
+    grid-row: 2 / -1;
+    padding: 0;
+  }
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  & > * + * {
+    margin-left: 40px;
+
+    @include mobile-and-tablet {
+      margin-left: 20px;
+    }
+  }
+}
+
+.navLink {
+  display: flex;
+  color: inherit;
+}
+
+.githubIcon {
+  width: 32px;
+  height: 32px;
+
+  @include mobile-and-tablet {
+    width: 28px;
+    height: 28px;
+  }
+}

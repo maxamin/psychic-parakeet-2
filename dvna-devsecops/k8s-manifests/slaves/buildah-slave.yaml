@@ -1,0 +1,14 @@
+kind: Pod
+metadata:
+  name: buildah
+  openshift.io/scc: anyuid
+spec:
+  containers:
+    - name: buildah
+      image: quay.io/buildah/stable
+      imagePullPolicy: IfNotPresent
+      command:
+        - sleep
+      args:
+        - 99d       
+  serviceAccountName: buildah-sa

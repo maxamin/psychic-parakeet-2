@@ -1,0 +1,22 @@
+<div class="container">
+	<h1> {{user.Username}}<small> {{user.Followers}} followers</small></h1>
+
+	<button ng-click="follow()" class="btn btn-success"> Follow </button>
+
+<div class="row">
+	<div class="col-md-9">
+
+	 	<p ng-bind-html="user.Entry" style="border: 1px solid; margin: 10px; padding: 10px"></p>
+
+	</div>
+
+	<div class="col-md-3">
+		<h3>Following</h3>
+
+		<div ng-repeat="u in user.Following track by $index">
+			<a ui-sref="user({user: u})">{{u}}</a>
+		</div> 
+
+	</div>
+</div>
+</div>

@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "target": "es2015",
+    "module": "commonjs",
+    "lib": ["DOM", "ES2015"],
+    "baseUrl": "src/", // Base directory to process non relative module names
+    "outDir": "./build", // When we build our app, the app is stored in a build folder
+    "rootDir": "src", // Root directory where all of the backend code resides inside.
+    "strict": true,
+    "removeComments": false,
+    "skipLibCheck": true,
+
+    "paths": {
+      "@global/*": ["./shared/global/*"],
+      "@service/*": ["src/shared/services/*"],
+      "@sockets/*": ["src/shared/sockets/*"],
+      "@worker/*": ["src/shared/workers/*"],
+      "@root/*": ["src/*"]
+   },
+    
+    "noImplicitAny": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "pretty": true,
+    "resolveJsonModule": true,
+
+    "plugins": [
+
+       {"transform": "typescript-transform-paths" },
+       {"transform": "typescript-transform-paths", "afterDeclarations": true},
+    ],
+
+    // Custom paths to import
+    
+  },
+
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules"]
+}

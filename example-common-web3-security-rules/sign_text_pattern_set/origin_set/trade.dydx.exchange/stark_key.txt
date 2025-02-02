@@ -1,0 +1,4 @@
+{
+    "action": "dYdX STARK Key",
+    "onlySignOn": "https://trade.dydx.exchange"
+}

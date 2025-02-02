@@ -1,0 +1,37 @@
+<%
+	require "yaml"
+	domain = "mgmsp-lab.com"
+	if File.exists?("../.ninjadvarc.yaml")
+		ninjadva_config = YAML::load_file("../.ninjadvarc.yaml")
+		domain = ninjadva_config["domain"] if ninjadva_config["domain"]
+	end
+%>
+local=/<%=domain%>/
+interface=wlan0
+interface=eth1
+interface=eth2
+
+# do not read /etc/hosts
+no-hosts
+
+domain=<%=domain%>
+# .33 - .61 for servers
+dhcp-range=eth1,172.23.42.33,172.23.42.61,255.255.255.192,24h
+
+# .140 - .254 for participants
+dhcp-range=eth2,172.23.42.140,172.23.42.254,255.255.255.128,24h
+
+# announce gateway for the whole network
+dhcp-option=eth1,121,172.23.42.0/24,172.23.42.1
+dhcp-option=eth2,121,172.23.42.128/24,172.23.42.129
+
+expand-hosts
+
+address=/gateway/172.23.42.129
+address=/gateway.<%=domain%>/172.23.42.129
+
+
+dhcp-host=08:00:27:a5:a5:a5,172.23.42.62
+
+address=/example.org/172.23.42.62
+address=/attacker.org/172.23.42.62

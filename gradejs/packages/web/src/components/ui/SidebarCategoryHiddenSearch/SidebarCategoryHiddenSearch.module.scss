@@ -1,0 +1,78 @@
+@import '~styles/_vars.scss';
+@import '~styles/responsive.scss';
+
+.groups {
+  max-height: 259px;
+  overflow-y: auto;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  padding-right: 16px;
+
+  @include mobile-and-tablet {
+    max-height: calc(100vh - 184px);
+    min-height: calc(100vh - 184px);
+    margin-bottom: 0;
+    padding-bottom: 48px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $gray-border;
+    border-radius: 14px;
+
+    &:hover {
+      background: $gray-text;
+    }
+  }
+}
+
+.groupName {
+  text-transform: uppercase;
+  font-weight: 500;
+  color: $gray-text;
+  padding-bottom: 6px;
+  border-bottom: 1px solid $gray-border;
+}
+
+.groupList {
+  padding: 15px 0;
+}
+
+.groupItem {
+  position: relative;
+  cursor: pointer;
+  padding: 3px 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  &:not(:last-child) {
+    margin-bottom: 15px;
+  }
+}
+
+.groupItemImage {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 12px;
+}
+
+.groupItemActive {
+  font-weight: 500;
+}
+
+.groupItemName {
+  flex-grow: 1;
+}
+
+.groupItemCheck {
+  flex-shrink: 0;
+  margin-left: 8px;
+  margin-right: 8px;
+}

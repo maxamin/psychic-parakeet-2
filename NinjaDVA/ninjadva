@@ -1,0 +1,325 @@
+#!/usr/bin/env ruby
+
+require "yaml"
+require 'fileutils'
+
+# usage# {{{
+usage = <<-END
+	usage:
+	#{$0} up -- start NinjaDVA components
+	#{$0} halt -- shutdown all components
+	#{$0} status -- show running components
+	#{$0} change -- stop or start additional components
+	#{$0} register <vm_name> <challenge_dir> <widget_dir> <adminwidget_dir> -- register a VM
+	#{$0} deregister <vm_name> <challenge_dir> <widget_dir> <adminwidget_dir> -- deregister a VM
+	#{$0} addlink <link_name> <link-url> -- add a link (to dashboard)
+	#{$0} rmlink <link_name> <link-url> -- remove a link (from dashboard)
+END
+
+# print usage if no no arguments
+if ARGV.size == 0
+	puts usage
+	exit
+end
+# }}}
+GatewayPath = "gateway_vm"
+ExampleVMPath = "your_vulnerable_vm"
+
+#require to be in same path were ninjadva is located
+Dir.chdir(File.dirname(File.absolute_path($0)))
+
+# ---- define functions ------# {{{
+
+def start_vagrant(pathToVagrantfile)
+	return system("cd #{pathToVagrantfile}; vagrant up")
+end
+
+def stop_vagrant(pathToVagrantfile)
+	return system("cd #{pathToVagrantfile}; vagrant halt")
+end
+
+def get_running_vms()
+	mypath = File.realpath(File.dirname($0))
+	runningVmsRequest = `vagrant global-status`.split(/\n+/)
+	runningVms = []
+	runningVmsRequest.each{|e|
+		runningVagrantVm = e.scan(/^.*running +#{mypath}\/(.*)$/).flatten[0].to_s.strip
+		# avoid adding vms not named in vagrant style
+		if runningVagrantVm
+			runningVms.push(runningVagrantVm)
+		end
+	}
+	return runningVms
+end
+
+# }}}
+# --- begin of script ------
+
+# try to load config file
+configFile = ".ninjadvarc.yaml"
+vmSettingsConfig = {}
+if File.exists?(configFile)
+	vmSettingsConfig = YAML::load_file(configFile)
+end
+vmSettingsConfig["launch"] ||= {}
+
+# search for subdirectories having Vagrantfile
+vmsFound = Dir.glob("**/Vagrantfile").collect{|f| File.dirname(f)}
+
+#handle no vms found
+if vmsFound.length == 0
+	puts "No VMs found :/ ... exit"
+	exit
+end
+
+# handle no gateway vm found and exclude gateway from decision
+unless vmsFound.delete(GatewayPath)
+	puts "No gateway VM found :/ ... exit"
+	exit
+end
+
+# Do not pay attention to example VM
+vmsFound.delete(ExampleVMPath)
+
+# merge vms found with vms in config
+vmStartDefinition = {}
+vmsFound.each{|e| vmStartDefinition[e] = false}
+# get subset of vms that can be found currently
+vmSettingsConfigExistSubset = vmSettingsConfig["launch"].select{|k,v| (vmStartDefinition.keys & vmSettingsConfig["launch"].keys).include?(k)}
+vmStartDefinition.merge!(vmSettingsConfigExistSubset)
+vmsCount = vmStartDefinition.keys.count
+# get vm directories cleaned, only the last sub-directory
+vmFoundCleaned = vmStartDefinition.keys.collect{|e|
+	File.basename(e)
+}
+
+
+case ARGV.first # process subcommands
+when "up" # {{{
+	# get running vagrant vms matching subfolders we can find
+	vmRunning = get_running_vms()
+	vmRunningMatched = vmRunning & vmFoundCleaned
+
+	if vmRunning.include?(GatewayPath)
+		puts "Gateway is running already."
+		puts "USe #{$0} change to start/stop further components."
+		exit
+	end
+
+	puts "VMs with a [X] will be started:"
+	loop do
+		# print current vm config
+		vmStartDefinition.each_with_index {|(k,v),i|
+			start = v ? "X" : " "
+			puts "[%s] %d  %s" % [start, i+1, k]
+		}
+
+		puts "Options: toggle VM start (1-%d), start chosen VMs (S), quit (q)" % [vmsCount]
+		print "Decision [Sq1-%d]: " % [vmsCount]
+		# get input
+		decision = STDIN.gets.chomp
+
+		puts "----------------------------"
+		puts
+
+		decisionAsNumber = decision.to_i
+		if decision.downcase == "s" or decision == ""
+			puts "....STARTING ..... *roedelroedel*....*klimper*...*piep*..."
+			puts
+			break
+		elsif decision.downcase == "q"
+			# quit script
+			puts "...quit............................."
+			exit
+		elsif decisionAsNumber.between?(1,vmsCount)
+			vmStartDefinition[vmStartDefinition.keys[decisionAsNumber-1]] = !vmStartDefinition[vmStartDefinition.keys[decisionAsNumber-1]]
+		else
+			puts "(!!!) WRONG INPUT [%s] :/" % [decision]
+			puts
+		end
+	end
+
+	# save new config
+	File.open(configFile,"w") do |f|
+		vmSettingsConfig["launch"].merge!(vmStartDefinition)
+		f.write(vmSettingsConfig.to_yaml)
+	end
+
+	# start VMs, Gateway first
+	([GatewayPath] + vmStartDefinition.to_a.collect{|a,b|
+		a if b
+	}.compact).each{|vm|
+		puts "starting #{vm} ...."
+		if not start_vagrant(vm)
+			stop_vagrant(vm)
+			puts "Failed to start #{vm}...exit"
+			exit
+		end
+	}
+# }}}
+when "halt"# {{{
+	# get running vagrant vms matching subfolders we can find
+	vmRunning = get_running_vms()
+	vmRunningMatched = vmRunning & vmFoundCleaned
+
+	# move gateway to last position
+	vmRunningMatched+=[GatewayPath] if vmRunning.include?(GatewayPath)
+
+	# stop VMs
+	vmRunningMatched.each{|k|
+		puts "stopping #{k} ..."
+		if not stop_vagrant(k)
+			puts "Failed to stop #{k}...exit"
+			exit
+		end
+	}
+	# }}}
+when "status"# {{{
+	# get running vagrant vms matching subfolders we can find
+	vmRunning = get_running_vms()
+	vmRunningMatched = vmRunning & vmFoundCleaned
+
+	unless vmRunning.include?(GatewayPath)
+		puts "Gateway is not running."
+		puts "Run #{$0} up to start NinjaDVA."
+		exit
+	end
+
+	# print current vm config
+	puts "Running VMs are marked with [X]:"
+	vmStartDefinition.each {|k,v|
+		running = vmRunningMatched.include?(File.basename(k))? "X" : " "
+		puts "[%s] %s" % [running, k]
+	}
+# }}}
+when "change"# {{{
+	# get running vagrant vms matching subfolders we can find
+	vmRunning = get_running_vms()
+	vmRunningMatched = vmRunning & vmFoundCleaned
+
+	unless vmRunning.include?(GatewayPath)
+		puts "Gateway is not running."
+		puts "Run #{$0} up to start NinjaDVA."
+		exit
+	end
+	puts "Mark or unmark components with [X] to start or stop them:"
+	vmChangeDefinition = vmStartDefinition.clone
+	# update run status
+	vmChangeDefinition.each{|k,v|
+		vmChangeDefinition[k]=vmRunningMatched.include?(File.basename(k))
+	}
+	# safe current state
+	vmStateBefore = vmChangeDefinition.clone
+
+	loop do
+		# print current vm config
+		vmChangeDefinition.each_with_index {|(k,v),i|
+			start = v ? "X" : " "
+			puts "[%s] %d  %s" % [start, i+1, k]
+		}
+
+		puts "Options: toggle VM start (1-%d), run change (C), quit (q)" % [vmsCount]
+		print "Decision [Cq1-%d]: " % [vmsCount]
+		# get input
+		decision = STDIN.gets.chomp
+
+		puts "----------------------------"
+		puts
+
+		decisionAsNumber = decision.to_i
+		if decision.downcase == "c" or decision == ""
+			puts "....CHANGING ..... *roedelroedel*....*klimper*...*piep*..."
+			puts
+			break
+		elsif decision.downcase == "q"
+			# quit script
+			puts "...quit............................."
+			exit
+		elsif decisionAsNumber.between?(1,vmsCount)
+			vmChangeDefinition[vmChangeDefinition.keys[decisionAsNumber-1]] = !vmChangeDefinition[vmChangeDefinition.keys[decisionAsNumber-1]]
+			puts
+		else
+			puts "(!!!) WRONG INPUT [%s] :/" % [decision]
+			puts
+		end
+	end
+
+	# get list of VMs to stop
+	vmsToHalt = []
+	vmChangeDefinition.each{|k,v|
+		# add vms that were running and should be stopped now
+		if vmStateBefore[k] == true and v == false
+			vmsToHalt.push(k)
+		end
+	}
+
+	# get list of vms to start
+	vmsToStart = []
+	vmChangeDefinition.each{|k,v|
+		# add vms that were running and should be stopped now
+		if vmStateBefore[k] == false and v == true
+			vmsToStart.push(k)
+		end
+	}
+
+	# handle stops
+	vmsToHalt.each{|k|
+		puts "stopping #{k} ..."
+		if not stop_vagrant(k)
+			puts "Failed to stop #{k}...exit"
+			exit
+		end
+	}
+
+	# handle starts
+	vmsToStart.each{|k|
+		puts "starting #{k} ..."
+		if not start_vagrant(k)
+			stop_vagrant(k)
+			puts "Failed to start #{k}...exit"
+			exit
+		end
+	}
+	# }}}
+when "register"# {{{
+	FileUtils.cp(Dir.glob("#{ARGV[1]}/#{ARGV[2]}/*.yaml"), "dashboard_vm/challenge-descriptions")
+	FileUtils.cp(Dir.glob("#{ARGV[1]}/#{ARGV[3]}/*.html"), "dashboard_vm/dashboard-widgets")
+	FileUtils.cp(Dir.glob("#{ARGV[1]}/#{ARGV[4]}/*.html"), "dashboard_vm/dashboard-admin")
+	#}}}
+when "deregister"# {{{
+	[
+		["#{ARGV[2]}/*.yaml","challenge-descriptions"],
+		["#{ARGV[3]}/*.html","dashboard-widgets"],
+		["#{ARGV[4]}/*.html","dashboard-admin"]
+	].each{|a|
+		Dir.glob("#{ARGV[1]}/#{a[0]}").each{|file|
+			file_basename = File.basename(file)
+			path_to_dashboard_file = "dashboard_vm/#{a[1]}/#{file_basename}"
+			FileUtils.rm(path_to_dashboard_file) if File.exist?(path_to_dashboard_file)
+		}
+	}
+	# }}}
+when "addlink"# {{{
+	linkfile = "dashboard_vm/dashboard-widgets/available_favourite_links.yaml"
+	if File.exists?(linkfile)
+		currentlinks = YAML::load_file(linkfile)
+	else
+		currentlinks = []
+	end
+	currentlinks << { hostname: ARGV[1] , name: ARGV[2]  }
+	currentlinks.uniq!
+	File.open(linkfile,"w") {|f| f << currentlinks.to_yaml }
+	# }}}
+when "rmlink"# {{{
+	linkfile = "dashboard_vm/dashboard-widgets/available_favourite_links.yaml"
+	if File.exists?(linkfile)
+		currentlinks = YAML::load_file(linkfile)
+		currentlinks.delete({ hostname: ARGV[1] , name: ARGV[2]  })
+		File.open(linkfile,"w") {|f| f << currentlinks.to_yaml }
+	end
+	# }}}
+else
+	puts "Wrong arguments ..."
+	puts usage
+	exit
+end

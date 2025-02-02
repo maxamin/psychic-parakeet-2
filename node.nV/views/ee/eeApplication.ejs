@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <% include ../partials/head %>
+  <body class=""> 
+  	<% include ../partials/header %>
+
+	    <section style="background: #fafafa;">
+	      <div class="container">
+	        <div class="breadcrumbs">
+	          <ul class="breadcrumb">
+	            <li><a href="/homepage">Dasbhboard</a></li>
+	            <li>Review Listing</li>
+	          </ul>
+	        </div>
+	        <h1 class="heading"><%= listing.name%><br><small>at <a href="#"><%= listing.owner.name %></a></small></h1>
+	        <div class="job-detail-description"
+			<% if (listing.isPremium) { %>
+				<i></i><span class="label featured__label label-success">Premium</span>
+			<% } else { %>
+				<i></i><span class="label featured__label label-info">Free</span>
+			<% } %>
+	        </div>
+	      </div>
+	    </section>
+	   
+       <section>
+         <div class="container">
+           <div class="row">
+             <div class="col-lg-10 col-lg-offset-1">
+               <form id="job-main-form" method="post" action="/submit_application" class="job-add-form">
+                 <div class="row">
+                   <div class="col-md-12">
+                     <h4>Job details</h4>
+                     <p class="text-muted text-small"><%= listing.description%></p>
+                     <hr>
+                   </div>
+                 </div>
+                
+                 <div class="row">
+                   <div class="col-md-12">
+                     <h4>About You</h4>
+                     <hr>
+                   </div>
+                 </div>
+                 <div class="row">
+                   <div class="col-md-12 form-group">
+                     <label for="company_name">Reason You Are Applying</label>
+                   	<textarea name="reasonApplied" rows="3" class="form-control"></textarea>
+                     <p class="help-block text-small">Tell use why you're applying</p>
+                   </div>
+                 </div>
+                 <div class="row">
+                   <div class="col-md-12 form-group">
+                     <label for="company_description">Tell use about yourself</label>
+                     <textarea name="background"  rows="3" class="form-control"></textarea>
+                     <p class="help-block text-small">Write a little information about your background relevant to this posting.</p>
+                   </div>
+                 </div>
+              	  <input type="hidden" name="listingId" value=<%= listing._id %>>
+                 <div class="row">
+                   <div class="col-md-12 text-center">
+                     <hr>
+                     <button type="submit" class="btn btn-primary"> <i class="fa fa-magic"></i> Save and apply</button>
+                   </div>
+                 </div>
+               </form>
+             </div>
+           </div>
+         </div>
+       </section>
+	   
+  <% include ../partials/footer %>
+  </body>
+</html>

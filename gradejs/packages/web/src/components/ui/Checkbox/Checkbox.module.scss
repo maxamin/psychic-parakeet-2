@@ -1,0 +1,58 @@
+@import '~styles/_vars.scss';
+@import '~styles/responsive.scss';
+
+.checkbox {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  padding: 2px 2px 2px 36px;
+}
+
+.checkboxInput {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+
+  &:checked ~ .checkboxName {
+    font-weight: 500;
+
+    &::before {
+      background: $black;
+    }
+
+    &::after {
+      opacity: 1;
+    }
+  }
+}
+
+.checkboxName {
+  display: inline-block;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    background: $gray-surface;
+    transition: background 0.2s ease-out;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 7px;
+    left: 6px;
+    width: 12px;
+    height: 10px;
+    opacity: 0;
+    transition: opacity 0.2s ease-out;
+    background: url('~assets/checkbox-check.svg') 50% no-repeat;
+  }
+}

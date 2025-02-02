@@ -1,0 +1,612 @@
+body{
+  font-family: 'Open Sans',  sans-serif;
+  margin: 0;
+ 
+}
+* {
+  box-sizing: border-box;
+}
+
+.nav{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 20px;
+ background-color: #ffffff;
+ filter: drop-shadow(0px 2.9825618267059326px 7.456404209136963px rgba(0, 0, 0, 0.10));
+padding-bottom: 20px;
+
+ }
+
+.nav-links{
+  display: flex;
+  justify-content: center; 
+  gap: 20px;
+}
+ .nav-items{
+  text-decoration: none;
+  color: black;
+  position: relative; /* This is necessary for the line effect */
+  transition: border-bottom 0.2s ease;
+ }
+.nav-items:hover{
+  border-bottom: 2px solid black; /* Adjust the thickness as needed */
+}
+
+.nav-social{
+  margin-left: 50px;
+  display: flex;
+
+  gap: 20px;
+
+}
+
+
+.hero-container{
+  display: flex;
+  align-items: center ;
+  justify-content: space-around;
+  padding-top: 80px;
+}
+
+.back{
+  background: rgb(255,95,129);
+  background: linear-gradient(180deg, rgba(255,95,129,1) 40%, rgba(253,152,180,1) 70% , rgba(255,237,177,1) 49%);
+  width: 300px;
+  height: 300px;
+border-radius: 50%;
+filter: blur(40px);
+
+
+}
+
+
+.hero-info{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+}
+
+.info1{
+color: #000;
+font-size: 60px;
+font-weight: 700;
+
+}
+
+.info2{
+  color:rgba(255,95,129,1);
+font-size: 60px;
+font-weight: 600;
+
+}
+
+.info-button{
+  width: 130px;
+height: 40px;
+border-radius: 10px;
+background: #F1F1F1;
+box-shadow: 0px 10px 20px 0px #F1F1F1;
+border:  #F1F1F1;
+font-size: 20px;
+
+font-weight: 400;
+}
+.info-button:hover{
+  opacity: 0.7;
+}
+
+/* 
+.AboutDiv {
+  position: relative; 
+} */
+
+/* .background{
+  filter: blur(30px);
+  height: 700px;
+  width: 900px;
+} */
+
+.background {
+  filter: blur(30px);
+  height: 90%; /* Set height to 100% to occupy the full height of its parent container */
+  width: 80%; /* Set width to 100% to occupy the full width of its parent container */
+  object-fit: cover; /* Ensure the image covers the entire container without distortion */
+  position: absolute; /* Set position to absolute to position the background image behind other elements */
+  z-index: -1; /* Set a lower z-index to place the background behind other content */
+
+}
+
+.About-bg{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+  height: 700px; /* Set a fixed height for the container */
+
+}
+
+/* .About-bg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 100px;
+} */
+/* 
+
+
+border-radius: 40px;
+background: linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.00) 100%), rgba(255, 255, 255, 0.30);
+backdrop-filter: blur(2px);
+*/
+.about-container{
+  width: 700px;
+height: 600px;
+
+background: rgba(255, 255, 255, 0.2);
+/* box-shadow: 0 8px 32px 0 rgba(215, 217, 244, 0); */
+box-shadow: 0 8px 32px 0 rgba(215, 217, 244, 0.5); /* Adjust the box-shadow */
+ 
+backdrop-filter: blur( 6px );
+-webkit-backdrop-filter: blur( 6px );
+border-radius: 40px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+
+position: absolute;
+  top: 50%;
+  left: 50%;  
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+}
+
+.about-heading{
+  padding-top: 20px;
+  color: #FFF;
+  font-size: 35px;
+font-weight: 500;
+
+
+}
+
+.skills-container{
+  display: flex;
+gap: 30px;
+  align-items: center;
+
+  flex-wrap: wrap; /* Add wrap to break skills into multiple lines */
+  justify-content: center; /* Center the skills in the container */
+
+
+}
+/*
+ border-radius: 10px;
+  background: linear-gradient(129deg, rgba(255, 255, 255, 0.40) 0%, rgba(255, 255, 255, 0.08) 100%);
+  box-shadow: 0px 3px 20px 0px rgba(185, 185, 185, 0.25);
+  backdrop-filter: blur(7.5px);
+*/
+.skills-container-item{
+  width: 100px;
+  height: 100px;
+
+  background: rgba( 255, 255, 255, 0.3 );
+  box-shadow: 0 8px 32px 0 rgba(213, 214, 240, 0.39);
+  border-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+
+ 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+   /* Add transition for smooth scaling */
+ transition: transform 0.3s ease;
+}
+.skills-container-item > img{
+  width: 40px;
+  height: 40px;
+    
+    }
+
+.skills-container-item:hover{
+     /* Scale the project slightly when hovering */
+     transform: scale(1.05);
+}
+
+.about-info1{
+
+
+width: 90%; /* Set the width to 100% to occupy the full container */
+height: auto; /* Set height to auto for dynamic height */
+margin: 20px 0; /* Add margin for better spacing */
+background: rgba( 255, 255, 255, 0.3 );
+box-shadow: 0 8px 32px 0 rgba(213, 214, 240, 0.39);
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 10px;
+text-align: justify; /* Align text to justify */
+font-size: 20px;
+font-weight: 300;
+color: #424242;
+
+ /* Add transition for smooth scaling */
+ transition: transform 0.3s ease;
+}
+.about-info1:hover{
+   /* Scale the project slightly when hovering */
+   transform: scale(1.02);
+}
+
+
+
+
+.project-bg{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 100px;
+  height: 1100px; /* Set a fixed height for the container */
+
+}
+
+.projects-container{
+  width: 700px;
+  height: 1000px;
+  
+  background: rgba( 255, 255, 255, 0.2 );
+  /* box-shadow: 0 8px 32px 0 rgba(215, 217, 244, 0); */
+  box-shadow: 0 8px 32px 0 rgba(215, 217, 244, 0.5); /* Adjust the box-shadow */
+ 
+  backdrop-filter: blur( 6px );
+  -webkit-backdrop-filter: blur( 6px );
+  border-radius: 40px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  position: absolute;
+  top: 50%;
+  left: 50%; 
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.projects-flexbox{
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.projects-flexbox > .project{
+  padding: 10px;
+
+  width: 650px;
+  height: auto; /* Adjust the height to auto for dynamic height */
+
+  background: rgba( 255, 255, 255, 0.3 );
+  box-shadow: 0 8px 32px 0 rgba(213, 214, 240, 0.39);
+ border-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  color: #424242;
+  display: flex;
+  flex-direction: column;
+ align-items: center;
+ text-align: center;
+gap: 20px;
+ /* Add transition for smooth scaling */
+ transition: transform 0.3s ease;
+ }
+
+.projects-flexbox > .project:hover {
+  /* Scale the project slightly when hovering */
+  transform: scale(1.05);
+}
+
+.project-tech{
+  display: flex;
+  gap: 10px;
+}
+.sources{
+  display: flex;
+  gap: 30px;
+
+}
+.inside-sources{
+  display: flex;
+align-items: center;
+gap: 3px;
+
+text-decoration: none;
+font-size: 15px;
+font-weight: 400;
+color: #424242;
+}
+.inside-sources:hover{
+  opacity: 0.8;
+}
+
+
+
+.project-title{
+  color: #ffffff;
+  font-size: 23px;
+  font-weight: 700;
+ }
+.project-description{
+ 
+  font-size: 15px;
+font-weight: 300;
+}
+
+
+
+
+.contact-container{
+  width: 700px;
+  height: 600px;
+  
+  background: rgba( 255, 255, 255, 0.2 );
+  box-shadow: 0 8px 32px 0 rgba(215, 217, 244, 0.5);
+  backdrop-filter: blur( 6px );
+  -webkit-backdrop-filter: blur( 6px );
+  border-radius: 40px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  position: absolute;
+  top: 50%;
+  left: 50%;  
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+gap: 30px;
+}
+
+.form-flex{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+gap: 20px;
+
+
+}
+.contact-heading{
+  display: flex;
+  align-items: center;
+flex-direction: column;
+ padding-top: 20px;
+gap: 10px;
+}
+
+.contact-h1{
+  padding-top: 20px;
+  color: #FFF;
+  font-size: 35px;
+font-weight: 500;}
+
+.contact-h2{
+  font-size: 18px;
+  color: #424242;
+}
+.name-email{
+  width: 500px;
+height: 30px;
+
+background: rgba( 255, 255, 255, 0.3 );
+box-shadow: 0 8px 32px 0 rgba(213, 214, 240, 0.39);
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+
+}
+.message{
+  width: 500px;
+  height: 200px;
+
+  
+  background: rgba( 255, 255, 255, 0.3 );
+  box-shadow: 0 8px 32px 0 rgba(213, 214, 240, 0.39);
+ border-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+
+}
+
+
+.name-email:focus,
+.message:focus {
+  outline: none; /* Remove the default focus outline */
+  border: 1px solid #ccc; /* Set the border style for the focused state */
+}
+
+
+
+
+
+/* Media Queries */
+@media screen and (max-width: 1024px) {
+
+
+  .info-button{
+   width: 100px;
+  height: 30px;
+  border-radius: 10px;
+  background: #F1F1F1;
+  box-shadow: 0px 10px 20px 0px #F1F1F1;
+  border:  #F1F1F1;
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 10px;
+  }
+
+  .nav {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav-links {
+    flex-direction: row; /* Change back to row for mobile */
+    gap: 20px;
+    margin-bottom: 20px; /* Add margin to separate nav-links and nav-social */
+  }
+  .nav-social {
+    margin-left: 0;
+    margin-top: 20px;
+
+  }
+
+  .nav-items {
+    margin-bottom: 0; /* Reset margin for links in mobile view */
+    border-bottom: none; /* Remove the border bottom on mobile to avoid duplication */
+    padding: 0; /* Reset padding for links in mobile view */
+ font-size: 25px;
+ 
+  }
+}
+
+
+/* Media Queries */
+@media screen and (max-width: 1024px) {
+  .hero-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .back {
+    margin-top: 60px;
+    width: 300px;
+    height: 300px;
+  }
+
+  .info1,
+  .info2 {
+    font-size: 60px;
+  }
+}
+
+
+
+
+
+
+/* Media Queries */
+@media screen and (max-width: 1024px) {
+ 
+.about-container {
+  padding-top: 20px;
+  width: 700px; /* Adjust container width on smaller screens */
+  height: auto; /* Set height to auto for dynamic height on smaller screens */
+  gap: 15px;
+}
+
+.about-heading {
+ 
+  font-size: 50px; /* Adjust font size on smaller screens */
+}
+
+.about-info1 {
+  text-align: center;
+  font-size:30px; /* Adjust font size on smaller screens */
+}
+
+.skills-container{
+padding-bottom: 20px;
+}
+
+
+ .background {
+    height: 100%;
+        width: 100%;   }
+
+}
+
+
+@media screen and (max-width: 1024px) {
+ .projects{
+  padding-top: 100px;
+ }
+  .projects-container {
+    padding-top: 20px;
+    width: 700px;
+    height: 1200px;
+  }
+
+  .projects-flexbox > .project {
+    align-items:center;
+text-align: center;
+  }
+  
+.project-title{
+  font-size: 25px;
+  font-weight: 700;
+ }
+.project-description{
+font-size: 25px;
+font-weight: 300;
+}
+
+  }
+
+
+  /* Media Queries */
+@media screen and (max-width: 1024px) {
+  .contact-container {
+    width: 700px; /* Adjust container width on smaller screens */
+  height: auto; /* Set height to auto for dynamic height on smaller screens */
+padding-bottom: 20px;
+     }
+
+  .contact-h1{
+    font-size: 50px; /* Adjust font size on smaller screens */
+  }
+  .contact-h2{
+    font-size: 25px;
+    font-weight: 300;
+  }
+
+  .form-flex {
+    gap: 10px; /* Reduce gap between form elements on smaller screens */
+  }
+ .name-email,
+  .message {
+    width: 600px;   } 
+}
+
+
+
+.footer {
+  background-color: #ffffff;
+ color: #424242;
+  padding: 10px;
+  text-align: center;
+}
+
+.footer-content {
+  max-width:500px;
+  margin: 0 auto;
+}
+
+.footer p {
+  font-size: 16px;
+}
+
+/* Media Query for responsiveness */
+@media screen and (max-width: 1024px) {
+  .footer {
+    padding: 10px;
+  }
+  .footer  p{
+    font-size: 20px;
+  }
+}

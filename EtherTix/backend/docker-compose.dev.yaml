@@ -1,0 +1,196 @@
+version: '3.3'
+
+
+services:
+
+  api-gateway-service:
+    container_name: ethertix-api-gateway-service
+    image: sabin2000/ethertix-api-gateway-service
+  
+    build:
+      context: ../backend/services/api-gateway
+      dockerfile: Dockerfile
+
+    restart: always
+
+    ports:
+      - "5670:5670"
+
+    networks:
+      - events-service
+      - tickets-service
+
+    volumes:
+      - /app/node_modules
+      - ../backend/services/api-gateway:/app
+
+  auth-service:
+    container_name: ethertix-authentication-service
+    image: sabin2000/ethertix-authentication-service
+    build:
+      context: ../backend/services/authentication
+      dockerfile: Dockerfile
+
+    
+    restart: always
+
+    ports:
+      - "5299:5299"
+      
+    volumes:
+       - /app/node_modules
+       - ../backend/services/authentication:/app
+
+  frontend-service:
+    container_name: ethertix-frontend-service
+    image: ethertix-frontend-service
+
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+
+    restart: always
+
+    ports:
+      - "3000:3000"
+
+    volumes:
+      - /app/node_modules
+      - ../frontend:/app
+
+  events-service:
+  
+      container_name: ethertix-events-service
+      image: sabin2000/ethertix-events-service
+      build:
+        context: ../backend/services/events-service
+        dockerfile: Dockerfile
+
+      restart: always
+
+      ports:
+        - "5301:5301"
+
+      networks:
+        - tickets-service
+
+      volumes:
+        - /app/node_modules
+        - ../backend/services/events-service:/app
+
+  orders-service:
+    container_name: ethertix-orders-service
+    image: sabin2000/ethertix-orders-service
+
+    build:
+      context: ../backend/services-orders-service
+      dockerfile: Dockerfile
+
+    restart: always
+
+    depends_on:
+      - booking-service
+
+    ports:
+      - "5051:5051"
+
+    volumes:
+      - /app/node_modules
+      - ../backend/services/orders-service:/app
+  
+  categories-service:
+      container_name: ethertix-categories-service
+      image: sabin2000/ethertix-categories-service
+      build:
+        context: ../backend/services/categories
+        dockerfile: Dockerfile
+
+      restart: always
+
+      ports:
+        - "5300:5300"
+
+      volumes:
+        - /app/node_modules
+        - ../backend/services/categories:/app
+
+  venues-service:
+    container_name: ethertix-venues-service
+    image: sabin2000/ethertix-venues-service
+    build:
+      context: ../backend/services/venues
+      dockerfile: Dockerfile
+
+    restart: always
+
+    ports:
+      - "5302:5302"
+
+    volumes:
+        - /app/node_modules
+        - ../backend/services/venues:/app
+  
+  tickets: ## Tickets Service Configuration
+    container_name: ethertix-tickets-service
+    image: sabin2000/ethertix-tickets-service
+
+    build:
+      context: ../backend/services/tickets
+      dockerfile: Dockerfile
+
+    restart: always
+
+    ports:
+      - "5303:5303"
+
+    networks:
+      - events-service
+
+    volumes:
+        - /app/node_modules
+        - ../backend/services/tickets:/app
+
+  discount-service:
+
+    container_name: ethertix-discounts-service
+    image: sabin2000/ethertix-discount-service
+
+    build:
+      context: ../backend/services/discount
+      dockerfile: Dockerfile
+
+    restart: always
+
+    ports:
+      - "5304:5304"
+
+    volumes:
+        - /app/node_modules
+        - ../backend/services/discount:/app
+
+  booking-service:
+    container_name: ethertix-booking-service
+    image: sabin2000/ethertix-booking-service
+
+    build:
+      context: ../backend/services/booking-service
+      dockerfile: Dockerfile
+
+    ports:
+      - "5050:5050"
+
+    volumes:
+      - /app/node_modules
+      - ../backend/services/booking-service:/app
+volumes:
+  mongodb_data_volume:
+
+networks:
+  tickets-service:
+    driver: bridge
+
+  events-service:
+    driver: bridge
+
+  bookings-service:
+    driver: bridge

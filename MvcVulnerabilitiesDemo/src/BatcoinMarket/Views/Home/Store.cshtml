@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "Store";
+}
+
+<div id="store" class="jumbotron">
+    <h2>@ViewBag.Title</h2>
+    <div id="coupon">Coupon: <span></span></div>
+    <div class="offer-row">
+        <div class="offer">
+            @if (ViewBag.ApplyCoupon)
+            {
+                <div class="discount">-25%</div>
+            }
+            <img src="@Url.Content("~/Content/batarang.jpg")" alt="batarang" />
+            <h2 class="offer-title">
+                @(ViewBag.ApplyCoupon ? "$75" : "$100")
+            </h2>
+            <button class="btn btn-success">Buy</button>
+        </div>
+        <div class="offer">
+            @if (ViewBag.ApplyCoupon)
+            {
+                <div class="discount">-50%</div>
+            }
+            <img src="@Url.Content("~/Content/batmobile.jpg")" alt="batmobile" />
+            <h2 class="offer-title">
+                @(ViewBag.ApplyCoupon ? "$100000" : "$200000")
+            </h2>
+            <button class="btn btn-success">Buy</button>
+        </div>
+        <div class="offer">
+            @if (ViewBag.ApplyCoupon)
+            {
+                <div class="discount">-33.3%</div>
+            }
+            <img src="@Url.Content("~/Content/batbike.jpg")" alt="batbike" />
+            <h2 class="offer-title">
+                @(ViewBag.ApplyCoupon ? "$30000" : "$45000")
+            </h2>
+            <button class="btn btn-success">Buy</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var couponCode = '@ViewBag.CouponCode';
+        if (couponCode) {
+            $('#coupon span').html(couponCode);
+            $('#coupon').fadeIn(1000);
+        }
+    });
+</script>
+
+
+
+
+@*
+    function unicodeEscape(str) {
+        return str.replace(/[\s\S]/g, function(character) {
+            var escape = character.charCodeAt().toString(16),
+                longhand = escape.length > 2;
+            return '\\' + (longhand ? 'u' : 'x') + ('0000' + escape).slice(longhand ? -4 : -2);
+        });
+    }
+
+    console.log(unicodeEscape('\'<&>'))
+
+    HACKED\x3cscript\x3ealert(\x27Hello\x27)\x3c/script\x3e
+*@

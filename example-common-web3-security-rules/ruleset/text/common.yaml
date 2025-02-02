@@ -1,0 +1,3 @@
+- description: The text signature of origin is not in the allow list of origin_set.
+  level: 3
+  logic: origin not in get_origin_set_of_text_sign(text)

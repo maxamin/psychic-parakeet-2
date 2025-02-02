@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+ <% include ../partials/head %>
+  <body class=""> 
+	  <% include ../partials/header %>
+
+	
+   <section>
+     <div class="container">
+       <div class="row">
+         <div class="col-lg-12 col-lg-offset-1">
+			 <!--begin form  -->
+           <form id="job-main-form" action="/tools" method="get" class="job-add-form">
+            
+           <div class="row">
+             <div class="col-md-4 form-group">
+ 			  	<h4>Code to run</h4>
+             	<input name="code" type="text" value="" placeholder="code"  class="form-control">
+ 		   	 </div>
+ 			</div>
+			
+             <div class="row">
+               <div class="col-md-12">
+                 <button type="submit" class="btn btn-primary"> Submit</button>
+               </div>
+             </div>
+			 
+           </form>
+         </div>
+       </div>
+	   <p/>
+	   <hr/>
+       <div class="row">
+		<div class="col-lg-12 col-lg-offset-1">
+            <div class="row">
+              <div class="col-md-4 form-group">
+				<h2>Results</h2>
+				<%= eval_result %>
+			  </div>
+		    </div>
+		</div>
+	   </div>
+     </div>
+	 <hr/>
+
+     
+   </section>
+  
+
+  <% include ../partials/footer%>
+  </body>
+</html>
+
+

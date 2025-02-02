@@ -1,0 +1,11 @@
+# docker run -d --name sonarqube -p 9000:9000 sonarqube:lts
+kind: Pod
+metadata:
+  name: sonar-scanner
+spec:
+  containers:
+  - name: sonar-scanner
+    image: sonarsource/sonar-scanner-cli
+    imagePullPolicy: IfNotPresent
+    tty: true
+    command: ["/bin/sh"]           

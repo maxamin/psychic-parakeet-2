@@ -1,0 +1,112 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# ninjaDVA Gateway
+require 'io/console'
+
+
+
+def provisionFile(config, from, to, options={mode: "775"})
+	config.vm.provision "file", source: from, destination: "/tmp/#{File.basename(from)}"
+	config.vm.provision "shell", inline: "install -m #{options[:mode]} /tmp/#{File.basename(from)} #{to}"
+end
+
+Vagrant.configure("2") do |config|
+	config.vm.define "gateway"
+
+	if File.exists?("../.ninjadvarc.yaml")
+		require "yaml"
+		ninjadvarc = YAML::load_file("../.ninjadvarc.yaml")
+	else
+		ninjadvarc = {}
+	end
+	ninjadvarc["domain"] ||= "mgmsp-lab.com"
+
+	# deactivate the standard shared folder
+	config.vm.synced_folder ".", "/vagrant", disabled:true
+
+	config.vm.box = "bento/debian-10"
+
+	config.vm.provider "virtualbox" do |vb|
+		vb.memory = "1024"
+	end
+
+	# set hostname
+	config.vm.hostname = "gateway"
+	ENV['LC_ALL']="en_US.UTF-8"
+
+	config.vm.provider "virtualbox" do |vb|
+		vb.name = "NinjaDVA_#{ninjadvarc["domain"]}_gateway"
+	end
+
+
+	# Interface 2, VirtualBox internal network
+	config.vm.network "private_network", auto_config: false, virtualbox__intnet: "ninjadva_#{ninjadvarc["domain"]}"
+
+	# Interface 3, bridged device
+	if ARGV[0] == "up"  || ARGV[0] == "reload"
+		puts <<-END
+		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		===        Starting Gateway          ===
+		<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+		END
+		decision = nil
+		loop do
+			puts "Do you want to bridge a hardware network device to the VM? [y/N]"
+
+			decision = STDIN.getch
+			puts decision
+
+			if decision.downcase == "n" or decision.downcase == "y" or decision == "\r"
+				break
+			end
+		end
+		if decision.downcase == "y"
+			puts "...bridging device"
+			config.vm.network "public_network", auto_config: false, use_dhcp_assigned_default_route: false
+			# promiscuous mode für Interface 3
+			config.vm.provider :virtualbox do |vb|
+				vb.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
+			end
+		else
+			config.vm.network "private_network", auto_config: false, virtualbox__intnet: "deadnetwork"
+		end
+	end
+
+	# define commands that will be executed on the vm after the vm is
+	# up and running. This is the right place for software installation.
+	config.vm.provision "shell", inline: <<-END
+		apt-get -y update
+		apt-get -y install dnsmasq
+	END
+
+	########### copy files to vm
+	# generate config
+	require "erb"
+	["dnsmasq.conf"].each{|erb_config|
+		File.open("tmp_#{erb_config}_tmp","w"){|tmpfile| tmpfile << ERB.new(File.read("#{erb_config}.erb")).result }
+	}
+
+	# copy network interfaces definition and hosts file to vm
+	provisionFile(config,"interfaces","/etc/network/interfaces", mode: 664)
+	provisionFile(config,"tmp_dnsmasq.conf_tmp","/etc/dnsmasq.d/dnsmasq.conf", mode: 664)
+
+	# reload the network configuration
+	config.vm.provision "shell", inline: <<-END
+		echo -e "net.ipv4.ip_forward=1\nnet.ipv6.conf.all.forwarding=1" > /etc/sysctl.d/forward.conf
+		sysctl -p /etc/sysctl.d/forward.conf
+		iptables --table nat --append POSTROUTING -j MASQUERADE -o eth0
+		echo "#!/sbin/iptables-restore" >/etc/network/if-pre-up.d/iptables-custom
+		iptables-save >>/etc/network/if-pre-up.d/iptables-custom
+		chmod a+x /etc/network/if-pre-up.d/iptables-custom
+		service dnsmasq restart
+		ifdown eth0
+		ifup eth0
+		ifdown eth1
+		ifup eth1
+		ifdown eth2
+		ifup eth2
+	END
+
+end

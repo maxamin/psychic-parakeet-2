@@ -1,0 +1,19 @@
+kind: Pod
+metadata:
+  name: zap
+spec:
+  containers:
+    - name: zap
+      image: owasp/zap2docker-stable
+      imagePullPolicy: IfNotPresent
+      command:
+        - sleep
+      args:
+        - 99d      
+      volumeMounts:
+        - mountPath: "/zap/wrk"
+          name: "workspace-volume"             
+  serviceAccountName: buildah-sa
+  volumes:
+  - name: "workspace-volume"
+    emptyDir: {}

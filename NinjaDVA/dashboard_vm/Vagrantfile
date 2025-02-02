@@ -1,0 +1,161 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# ninjaDVA Dashboard
+#
+
+Vagrant.configure("2") do |config|
+	config.vm.define "dashboard"
+
+	# deactivate the standard shared folder
+	config.vm.synced_folder ".", "/vagrant", disabled:true
+
+	# name and version of vm image
+	config.vm.box = "bento/debian-10"
+
+	#set hostname for vm
+	config.vm.hostname = "dashboard"
+	ENV['LC_ALL']="en_US.UTF-8"
+
+	config.vm.provider "virtualbox" do |vb|
+		vb.memory = "2048"
+	end
+
+	if File.exists?("../.ninjadvarc.yaml")
+		require "yaml"
+		ninjadvarc = YAML::load_file("../.ninjadvarc.yaml")
+	else
+		ninjadvarc = {
+			"domain" => "mgmsp-lab.com"
+		}
+	end
+
+	config.vm.provider "virtualbox" do |vb|
+		vb.name = "NinjaDVA_#{ninjadvarc["domain"]}_dashboard"
+	end
+
+	# add interfaces to the vm which are in the same internal network like the gateway
+	# dashboard
+	config.vm.network "private_network", auto_config: false, virtualbox__intnet: "ninjadva_#{ninjadvarc["domain"]}"
+	# clonecloud
+	config.vm.network "private_network", auto_config: false, virtualbox__intnet: "ninjadva_#{ninjadvarc["domain"]}"
+	# myhomepage
+	config.vm.network "private_network", auto_config: false, virtualbox__intnet: "ninjadva_#{ninjadvarc["domain"]}"
+
+	# define commands that will be executed on the vm after the vm is
+	# up and running. This is the right place for software installation.
+	config.vm.provision "shell", inline: <<-END
+			apt-get -y update
+			apt-get -y remove isc-dhcp-client
+			apt-get -y install apache2 ruby ruby-dev ruby-sqlite3 sqlite3 dhcpcd5 libfontconfig1 libffi-dev inotify-tools psmisc build-essential
+			killall dhclient
+			gem install argon2
+	END
+
+	########### copy files to vm
+
+	# generate config
+	require "erb"
+	["vmhost.conf","hosts"].each{|erb_config|
+		File.open("tmp_#{erb_config}_tmp","w"){|tmpfile| tmpfile << ERB.new(File.read("#{erb_config}.erb")).result }
+	}
+
+	# copy hosts file and interfaces to vm
+	config.vm.provision "file", source: "./tmp_hosts_tmp", destination: "/tmp/vagrant_tmp/hosts"
+	config.vm.provision "file", source: "./interfaces", destination: "/tmp/vagrant_tmp/interfaces"
+
+
+	# copy apache vm definition and server code to vm
+	config.vm.provision "file", source: "./tmp_vmhost.conf_tmp", destination: "/tmp/vagrant_tmp/vmhost.conf"
+	config.vm.provision "file", source: "./www", destination: "/tmp/vagrant_tmp/www"
+
+	# move files to their destination
+	config.vm.provision "shell", inline: <<-END
+		cd /tmp/vagrant_tmp/
+		install -o root -g root interfaces /etc/network/interfaces
+		install -o root -g root hosts /etc/hosts
+		install -o root -g root vmhost.conf /etc/apache2/sites-available/vmhost.conf
+		cp -R www/* /var/www/
+		find /var/www -iname "*.cgi"|xargs chmod a+x
+		chown -R root:root /var/www/
+		rm -rf *
+	END
+
+	config.trigger.after :provision do |trigger|
+		# generate initial config dir
+		require "yaml"
+		require "fileutils"
+
+		Dir.mkdir("config") unless Dir.exists?("config")
+
+		unless File.exists?("config/config.rb")
+			FileUtils.cp("www/config_sample.rb","config/config.rb")
+			if File.exists?("../.ninjadvarc.yaml")
+				ninjadva_config = YAML::load_file("../.ninjadvarc.yaml")
+				if ninjadva_config["domain"]
+					File.open("config/config.rb","a"){|conffile|
+						conffile << "$conf.domain = \"#{ninjadva_config["domain"]}\"\n"
+					}
+				end
+			end
+			puts "A default config was created. You may edit config/config.rb"
+		end
+
+
+		unless File.exists?("config/htdigest")
+			INSTALLDIR=File.expand_path(".")
+			$ignore_db_error=true
+			require_relative "www/config_defaults.rb"
+			require "digest"
+			user = "admin"
+			realm = "Restricted Area"
+			File.open("config/htdigest","w"){|f|
+				f << "#{user}:#{realm}:#{Digest::MD5.hexdigest("#{user}:#{realm}:#{$conf.default_userpw}")}\n"
+			}
+			puts "A default password file was created at config/htdigest with the default password in config.rb!"
+			puts "You need this Password for the admin interface."
+			puts "url: http://dashboard.#{$conf.domain}/admin"
+			puts "user: admin"
+			puts "pass: #{$conf.default_userpw}"
+		end
+	end
+
+	# shared folders
+	config.vm.synced_folder "./config", "/var/www/config", mount_options: ["dmode=777,fmode=666"]
+	config.vm.synced_folder "./challenge-descriptions", "/var/www/challenge-descriptions"
+	config.vm.synced_folder "./dashboard-widgets", "/var/www/dashboard-widgets/"
+	config.vm.synced_folder "./dashboard-admin", "/var/www/dashboard-admin/"
+
+
+	# reload the network configuration
+	config.vm.provision "shell", inline: <<-END
+		echo -e "\n# avoid nic1 providing a dns server\ninterface eth0\nnooption 6" >> /etc/dhcpcd.conf
+		i=1
+		for h in dashboard clonecloud myhomepage
+		do
+			printf "interface eth%s\nhostname %s\n\n" $i $h >> /etc/dhcpcd.conf
+			ifdown eth$i
+			ifup eth$i
+			i=$((i+1))
+		done
+	END
+
+
+	# define commands that will be executed after the code was copied to
+	# the vm. This is the place where your server configuration can take place
+	config.vm.provision "shell", inline: <<-END
+		chown www-data:www-data /var/www/clonecloud
+		service apache2 stop
+		a2enconf serve-cgi-bin
+		a2dismod mpm_event
+		a2enmod mpm_prefork
+		a2enmod cgi
+		a2enmod headers
+		a2enmod rewrite
+		a2enmod auth_digest
+		a2ensite vmhost
+		a2dissite 000-default
+		service apache2 start
+		wget -O - http://dashboard/admin/setup_db.cgi
+	END
+end

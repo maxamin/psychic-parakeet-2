@@ -1,0 +1,29 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# ninjaDVA your vulnerable vm
+#
+# Requirements:
+# Please execute `vagrant plugin install vagrant-triggers`
+# if you start the vm the first time and get an error
+
+Vagrant.configure("2") do |config|
+
+	#-------------------Your VM config----------------------------------
+	config.vm.define "yourvulnerablevm"
+
+	# name and version of vm image
+	config.vm.box = "bento/debian-9"
+
+	#set hostname for vm
+	config.vm.hostname = "yourvulnerablevm"
+
+	#----------------- ninjaDVA specific configuration -------------------------------
+
+	# test whether the vm is started in ninjaDVA context
+	# if yes copy challenges to dashboard vm
+	if File.exists?("../ninjadva.rb")
+		require "../ninjadva"
+		NinjaDVA.new(config)
+	end
+end

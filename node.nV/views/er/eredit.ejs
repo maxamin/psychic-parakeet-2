@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <% include ../partials/head %>
+  <body class=""> 
+
+  <% include ../partials/header %>
+  
+  <section style="background: #fafafa;">
+    <div class="container">
+      <div class="breadcrumbs">
+        <ul class="breadcrumb">
+           <li><a href="/homepage">Dasbhboard</a></li>
+          <li>Review Listing</li>
+        </ul>
+      </div>
+      <h1 class="heading"><%= listing.name%><br><small>at <a href="#"><%= listing.owner.name %></a></small></h1>
+      <div class="job-detail-description"
+	<% if (listing.isPremium) { %>
+		<i></i><span class="label featured__label label-success">Premium</span>
+	<% } else { %>
+		<i></i><span class="label featured__label label-info">Free</span>
+	<% } %>
+      </div>
+    </div>
+  </section>
+  
+  <section>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10 col-lg-offset-1">
+          <form id="job-main-form" method="post" action="/update_listing" class="job-add-form">
+            
+          <div class="row">
+            <div class="col-md-4 form-group">
+			  <h4>Job Title</h4>
+          	
+            		<input name="name" type="text" value="<%= listing.name %>" placeholder="Name"  class="form-control">
+			  
+			</div>
+		</div>
+		  
+		  
+            <div class="row">
+              <div class="col-md-12 form-group">
+               <h4>Job Details</h4>
+              	<textarea name="description" rows="4" class="form-control"><%= listing.description%></textarea>
+                <p class="help-block text-small">Tell use why you're applying</p>
+              </div>
+            </div>
+			
+          
+			
+      
+			
+         	<input type="hidden" name="id" value=<%= listing._id %>>
+            <div class="row">
+              <div class="col-md-12 text-center">
+                <hr>
+                <button type="submit" class="btn btn-primary"> <i class="fa fa-magic"></i> Save Listing</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+
+    <% include ../partials/footer %>
+  </body>
+</html>

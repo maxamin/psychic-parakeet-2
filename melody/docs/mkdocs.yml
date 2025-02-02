@@ -1,0 +1,28 @@
+site_name: Melody Documentation
+theme:
+  name: material
+  palette:
+    primary: cyan
+nav:
+- Features: features.md
+- Requirements: requirements.md
+- Quickstart: quickstart.md
+- Installation: installation.md
+- Rules: rules.md
+- Layers: layers.md
+#- Use cases: use_cases.md
+- Links: links.md
+- Meloctl: meloctl.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences
+  - footnotes
+  - toc:
+      permalink: "#"
+plugins:
+    - search
+    - awesome-pages
+
+repo_url: https://github.com/bonjourmalware/melody
+repo_name: bonjourmalware/melody

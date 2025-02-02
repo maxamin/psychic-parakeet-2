@@ -1,0 +1,126 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+Properties props = new Properties()
+props.load(new FileInputStream(new File("local.properties"))) // Unhandled Exception
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    defaultConfig {
+        applicationId "miguel.freitas.kotlingoat"
+        minSdkVersion 16 // Insecure SDK Version
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        applicationVariants.all { variant ->
+            variant.outputs.all { output ->
+                def formattedDate = new Date().format('dd_MM_yyyy')
+                def prefix = ""
+                if (variant.buildType.name == "debug") {
+                    prefix = "_test"
+                }
+                outputFileName = props["APK_FILE_NAME"]  + "_" + formattedDate + prefix + ".apk" //Stored Path Traversal
+            }
+        }
+        manifestPlaceholders = [
+                ApiKey: props["API_KEY"] //Manifest Variable Binding Privacy Violation
+        ]
+
+        buildConfigField("String", "KEY", props['KEY']) //Build Config Privacy Violation
+        buildConfigField("String", "BLOCK_CIPHER", props['BLOCK_CIPHER']) //Build Config Privacy Violation
+        buildConfigField("byte[]", "INIT_VECTOR", props['INIT_VECTOR']) //Build Config Privacy Violation
+
+        multiDexEnabled true
+    }
+    signingConfigs {
+        debug {
+            keyAlias "test"
+            keyPassword props["keyPassword"]
+            storeFile file(props["keystorePath"]) // Path Traversal, Unhandled Exception
+            storePassword props["storePassword"]
+        }
+        release {
+            keyAlias "test"
+            keyPassword "myKeyPassword" // Hardcoded Password
+            storeFile file("keystore.jks")// Unhandled Exception
+            storePassword "myStorePassword" // Hardcoded Password
+        }
+    }
+    buildTypes {
+        debug {
+            debuggable true // Debuggable App
+            jniDebuggable true // Debuggable JNi Code
+            renderscriptDebuggable true // Debuggable RenderScript Code
+            minifyEnabled false // Minify Disabled - Dead Code
+            useProguard false // Proguard Disabled
+            // Proguard Not in Use
+            // Missing Signing Configuration
+        }
+        release {
+            debuggable true // Debuggable App
+            jniDebuggable true // Debuggable JNi Code
+            renderscriptDebuggable true // Debuggable RenderScript Code
+            minifyEnabled false // Minify Disabled - Dead Code
+            useProguard false // Proguard Disabled
+            // Proguard Not in Use
+            // Missing Signing Configuration
+        }
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+    externalNativeBuild { //Use of Native Language
+        cmake {
+            version "3.10.2"
+            path "src/main/cpp/CMakeLists.txt"
+        }
+    }
+}
+
+println(System.getenv("keyPassword"))//Privacy Violation, Unhandled Exception
+println(props["storePassword"])//Privacy Violation
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar']) // Process Control
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation props["myDependency"] // Stored Dependency Injection
+    implementation 'androidx.core:core-ktx:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.multidex:multidex:2.0.1'
+
+    //REST Client Libraries
+        implementation 'com.squareup.retrofit2:retrofit:2.7.1' //Retrofit
+        implementation 'com.squareup.moshi:moshi-kotlin:1.9.2' //Moshi
+        debugImplementation 'com.readystatesoftware.chuck:library:1.1.0' //Chuck
+        releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0' //Chuck
+        implementation ("com.github.bumptech.glide:glide:4.11.0") { // Glide
+            exclude group: "com.android.support"
+        }
+    //Logging
+        implementation 'com.jakewharton.timber:timber:4.7.1' // Timber
+        implementation 'com.bugsnag:bugsnag-android-gradle-plugin:4.7.4' // BugSnag
+        implementation 'com.instabug.library:instabug:9.0.5' // Instabug
+        implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta01' // Firebase Crashalytics
+        implementation('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') { // Fabric, Crashalytics
+            transitive = true
+        }
+        implementation 'org.slf4j:slf4j-android:1.7.30' // SLF4J Android
+        implementation 'de.mindpipe.android:android-logging-log4j:1.0.3' // Android Log4J
+    // Database
+        implementation "androidx.room:room-runtime:2.2.4" // Room
+        annotationProcessor "androidx.room:room-compiler:2.2.4" // Room
+        implementation 'com.github.satyan:sugar:1.5' // Sugar ORM
+        implementation "com.squareup.sqldelight:android-driver:1.2.2" // SQL Delight
+        implementation 'org.dizitart:nitrite:3.3.0' // Nitrite
+        implementation 'com.awesomedroidapps:inappstoragereader:1.0.2' // AppDataReader
+        implementation 'org.greenrobot:greendao:3.2.2' //Green DAO
+        implementation 'com.github.dkharrat.nexusdata:nexusdata:0.2.1' // Nexus Data
+
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}

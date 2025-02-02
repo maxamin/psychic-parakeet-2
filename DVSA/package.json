@@ -1,0 +1,38 @@
+{
+  "name": "dvsa",
+  "version": "1.2.2",
+  "description": "DVSA - Damn Vulneravle SERVERLESSS Application",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "cd client && npm i && cd ../backend/src/functions/order-api && npm i",
+    "client:build": "cd client && npm run-script build",
+    "client:start": "cd client && npm start",
+    "client:start:local": "cd client && npm run-script start:local",
+    "start": "serverless offline",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/owasp/DVSA.git"
+  },
+  "keywords": [
+    "DVSA",
+    "serverless",
+    "vulnerable"
+  ],
+  "author": "Tal Melamed",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/owasp/DVSA/issues"
+  },
+  "homepage": "https://github.com/owasp/DVSA#readme",
+  "devDependencies": {
+    "serverless-finch": "^2.6.0",
+    "serverless-scriptable-plugin": "^0.8.0",
+    "serverless-stack-output": "^0.2.3"
+  },
+  "dependencies": {
+    "serverless": "^2.22.0",
+    "serverless-offline": "^4.10.6"
+  }
+}
