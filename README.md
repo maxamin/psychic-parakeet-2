@@ -34,7 +34,6 @@ Clone any project and follow its setup instructions to get started.
 https://github.com/maxamin/psychic-parakeet-2.git
 cd psychic-parakeet-2
 ```
-Refer to each project’s `README.md` for environment setup and guidance.
 
 ## Contributing
 Contributions are welcome! Submit a pull request with your suggestions or improvements.
